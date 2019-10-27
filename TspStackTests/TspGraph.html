@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        var r2d = Math.PI / 180.0;
+        var canvas = null;
+        var ctx = null;
+        var cx = null;
+        var cy = null;
+        var radius = null;
+        var margin = 10;
+        function radToDeg(a) {
+            return a * r2d;
+        }
+        function unitCirclePointRadians(a) {
+            //x = cx + r * cos(a);
+            //y = cy + r * sin(a);
+            // where r= radius=1;
+            // and cx, xy is the origin
+            // and a is the angle.
+            //giving unit circle equations:
+            //  x = 0+1*cos(a);
+            //  y = 0+1*sin(a);
+            // which simplifies to:
+            //  x = cos(a);
+            //  y = sin(a);
+            return { x: Math.cos(a), y: Math.sin(a) };
+        }
+        function circlePointDegrees(a) {
+            return circlePointRadians(radToDeg(a));
+        }
+        function circlePointRadians(a) {
+            return { x: cx + radius * Math.cos(a), y: cy + radius * Math.sin(a) };
+        }
+
+        function graphNPoints(n) {
+            var a = 360.0 / n;
+            for (var i = 0; i < n; i++) {
+                var p = circlePointDegrees(a * i);
+                drawCircle(p.x, p.y, 3);
+            }
+        }
+        function drawCircle(x, y, r) {
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+        function initCanvas() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext("2d");
+            radius = (canvas.width - margin) / 2.0;
+            cx = cy = radius + (margin/2);
+            drawCircle(cx, cy, radius);
+            graphNPoints(6);
+        }
+        $(document).ready(() => initCanvas());
+    </script>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400">
+
+    </canvas>
+</body>
+</html>

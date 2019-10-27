@@ -1,0 +1,10 @@
+﻿___[MOD] C:\Users\alexander.higgins\source\repos\ILDisassembler\ILDisassembler\bin\Debug\ILDisassembler.exe
+   |      M A N I F E S T
+   |___[NSP] ILDisassembler
+   |   |___[CLS] ILDisassembler.Program
+   |   |   |     .class private auto ansi beforefieldinit 
+   |   |   |___[MET] .ctor : void()
+   |   |   |___[STM] Main : void(string[])
+   |   |
+   |
+
