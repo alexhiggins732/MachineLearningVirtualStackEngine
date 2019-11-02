@@ -22,7 +22,7 @@ namespace ILEngine
         public static IlInstruction Create(ILOpCodeValues ilOpCodeValue, object arg)
         {
             var opCode = OpCodeLookup.GetILOpcode((int)ilOpCodeValue);
-            var result = new IlInstruction { OpCode = opCode, Arg= arg };
+            var result = new IlInstruction { OpCode = opCode, Arg = arg };
             return result;
         }
 

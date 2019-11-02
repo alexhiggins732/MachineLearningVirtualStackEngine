@@ -8,51 +8,14 @@ using System.Reflection;
 
 namespace ILEngine
 {
-
-    public interface IIlInstructionResolver
-    {
-        Module Module { get; }
-        Func<int, FieldInfo> ResolveFieldToken { get; }
-        Func<int, MemberInfo> ResolveMemberToken { get; }
-        Func<int, MethodBase> ResolveMethodToken { get; }
-        Func<int, byte[]> ResolveSignatureToken { get; }
-        Func<int, string> ResolveStringToken { get; }
-        Func<int, Type> ResolveTypeToken { get; }
-    }
-    public class IlInstructionResolver : IIlInstructionResolver
-    {
-        public static IlInstructionResolver ExecutingAssemblyResolver = new IlInstructionResolver(Assembly.GetExecutingAssembly().ManifestModule);
-        //public static IlInstructionResolver CallingAssemblyResolver = new IlInstructionResolver(Assembly.GetCallingAssembly().ManifestModule);
-        //public static IlInstructionResolver EntryAssemblyResolver = new IlInstructionResolver(Assembly.GetEntryAssembly().ManifestModule);
-        public Module Module { get; }
-        public Func<int, FieldInfo> ResolveFieldToken { get; }
-        public Func<int, MemberInfo> ResolveMemberToken { get; }
-        public Func<int, MethodBase> ResolveMethodToken { get; }
-        public Func<int, byte[]> ResolveSignatureToken { get; }
-        public Func<int, string> ResolveStringToken { get; }
-        public Func<int, Type> ResolveTypeToken { get; }
-
-        public IlInstructionResolver(MethodInfo method) : this(method.DeclaringType.Assembly.ManifestModule) { }
-        public IlInstructionResolver(Module manifestModule)
-        {
-            this.Module = manifestModule;
-            //var module = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule;
-            this.ResolveFieldToken = (Func<int, System.Reflection.FieldInfo>)Module.ResolveField;
-            this.ResolveMemberToken = (Func<int, System.Reflection.MemberInfo>)Module.ResolveMember;
-            this.ResolveMethodToken = (Func<int, System.Reflection.MethodBase>)Module.ResolveMethod;
-            this.ResolveSignatureToken = (Func<int, byte[]>)Module.ResolveSignature;
-            this.ResolveStringToken = (Func<int, string>)Module.ResolveString;
-            this.ResolveTypeToken = (Func<int, Type>)Module.ResolveType;
-
-        }
-    }
+ 
     /// <summary>
     /// IL
     /// </summary>
     public class IlInstructionEngine
     {
 
-
+        public bool TriggerBreak = false;
         public T ExecuteTyped<T>(MethodInfo method, params object[] args)
         {
             var result = ExecuteTyped(method, args);
@@ -962,12 +925,12 @@ namespace ILEngine
 
                     break;
                 case (short)ILOpCodeValues.Break:
-                    System.Diagnostics.Debugger.Break();
+                    if(TriggerBreak) System.Diagnostics.Debugger.Break();
                     break;
 
                 default:
-
-                    var notImplemented = code;
+                    throw new NotImplementedException($"IL Instruction not implemented. {code}");
+                    var notImplemented = code;// todo throw
                     break;
             }
 
@@ -982,7 +945,14 @@ namespace ILEngine
 
             Ret:
             var result = (stack.Count > 0) ? stack.Pop() : null;
-            System.Diagnostics.Debug.Assert(stack.Count() == 0);
+            if (TriggerBreak)
+            {
+                System.Diagnostics.Debug.Assert(stack.Count() == 0);
+            } else
+            {
+                //if (stack.Count > 0) throw new InvalidProgramException("Stack is not empty {stack.Count}");
+            }
+
             return result;
 
         }

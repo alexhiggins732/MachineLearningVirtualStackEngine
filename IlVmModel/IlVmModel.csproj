@@ -46,6 +46,7 @@
     <Compile Include="ILVmEngineCompiler.cs" />
     <Compile Include="IlVmEngineModel.cs" />
     <Compile Include="IlVmMeta.cs" />
+    <Compile Include="Models\VmMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VmILInterpreter.cs" />
     <Compile Include="VmOpcode\IVmStack.cs" />

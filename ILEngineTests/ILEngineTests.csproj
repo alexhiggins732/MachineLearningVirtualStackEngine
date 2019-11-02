@@ -66,6 +66,7 @@
     <Compile Include="IlMethod.cs" />
     <Compile Include="Implemenations\IlInstructionEngineTests.cs" />
     <Compile Include="Implemenations\IlInstructionReaderTests.cs" />
+    <Compile Include="Implementations\IlStackFrameWithDiagnosticsTests.cs" />
     <Compile Include="ObjectStackTests.cs" />
     <Compile Include="OpCodeTests\OpCodeTests.cs" />
     <Compile Include="Program.cs" />

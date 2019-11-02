@@ -1,0 +1,30 @@
+﻿Model opcodes so arguments are known.
+
+Unify conflicting, overlapping enums, lookups, iterators, etc.
+
+Define them.
+	OpCode, OpCodeWraper, IlOpCodeValues, IlInstructions, etcs.
+
+
+1) Ability to tell what arguments are needed. Training will be easier initially with no argument opcodes.
+2) Determine if argumentless opcodes can be used to determin valid/invalid instructions.
+	-> eg, add requires 2 arguments on the stack. Additionally type checking, but even without still useful just to know arg counts.
+
+3) Try to implement opcode scanner that can read through instructions and count theoritical items on the stack.
+
+4) Action based opcode implementation. The engine is a beast and it would be great to allow different implementations:
+	Full implementation:
+	Argumentless implementation:
+	Diagnostic registrations (StackCount, Steps, Logging, Debugging, Memory Use).
+	Either single implementation using #Pragma statements or not.
+	API based DI would allow for easy implementation changes:
+		Additionally as AI gets better it could inject different implemenations.
+		Also could register different hooks, like using a deep learning network to determine next best feasible steps like Talk To Transformer.
+		Alternatives for OpCode generation. Random walk will only get so far. Q has its limitations. Genetic can be interesting.
+		Allow for knowledge transfer.
+5) POCO based stack frame {Instructions:{} Arguments{}, LocalVariables:{}, Resolvers()} -> 
+		allow for cloning, serialization, branching at steps without need to replay all operations for every mutations of the sequence.
+		allow for fuzzing of opcode arguments when they get implemented.
+
+		
+

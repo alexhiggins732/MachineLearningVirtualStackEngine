@@ -1,0 +1,162 @@
+﻿===========
+10/29/2019
+===========
+priority:
+	1) limiting to opcodes with no arguments is workable, not an undefined theory/deliverable.
+	1) this translates into more efficient learning algo.
+	2) need spec/working theory on how to a) implement and b) take advantage of stack diagnostics.
+	3) gray area. UIR converters / reflection helpers methods are needed.
+	4) higher penalities for exceptions and timeouts could be useful or could be a waste.
+		-> it is still a negative step. could also be limited by 1.
+	5) need to tackle this via debugging.
+	6) need to spec out. session persistance, schema, retreival, best way to gain knowledge.
+	7) enhancment of 6.
+
+Ideal:
+	Provide natural language input to algo to learn from. Standard in, ability to record desktop for CNN classification review.
+
+
+1) Stack validation:
+	During echo training it was observed that rewards where gained using invalid opcodes.
+		eg: .endtry, st.ind.4.0
+	complete coding.
+	Can we better define valid moves, based on and estimated stack count?
+		Some sequence must be ran and stack will be based on variables.
+		EG: stack.pop()+stack.pop(). 
+
+	can msil code be scanned? if we limited to opcodes with no variables, perhaps, perhaps not.
+		-> ldc.loc.3. st.loc.0
+2) Add OpCount, recursions, memory usage counts to ILEngine.
+
+3) Reward validation is finicky using dynamic.
+	Exceptions comparing single to int, string to int, etc.
+
+4) Incorporate exceptions into learing? -0.1 reward vs high penalty for exceptions.
+	Should we use log to allow for scaling of reward/penalty.
+
+5) Q matrix is quite impcomplete, can't reproduce best algorithm.
+	Might need (previous,current,next, nextnext)
+
+6) Implement sessions, and session steps.
+	given no input, random search for reward, try to classify the problem set.
+
+7) Allow named sessions and session steps.
+	make q matrix serializable. allow for storing of text based macros. build knowledge based allowing text classification of input commands.
+
+
+===========
+10/30/2019
+===========
+
+Spent time loading OpCodes and enum properties into the database to allow for smarter initial selection for stack filtering.
+
+Plan is to implement valid opcode generator interface which the AI should learn to implement based on machine learning:
+	requires building out meta documentation which will be useful to allow classification through interactive text-based session.
+	Have meta on:
+		OpCode
+			-> FlowControl, OpCodeType, OperandType and StackBehavior
+
+For now will filter, either by dynamic linq query or sql:
+
+select * from flowcontrol
+/*
+
+Filters:
+
+exclude:
+	always: Break, Meta, Phi (1, 4, 6)
+	conditional:
+		requires learning: (0, 2,3,7, 8)
+			Branch:
+			Cond_Branch: (perhaps can be brutefored
+			Call
+			Return: endfinally,endfilter
+			Throw:
+
+include:
+	always: 
+		Next (5)
+	conditional: 
+		Return (7): Ret
+*/
+	
+--Empty Stack opcodes:
+-- empty stack:
+  select * from vwOpCode oc 
+  where 
+  oc.StackBehaviourPop='Pop0' -- no values are popped off the stack
+  and operandType='inlinenone'
+  and (flowcontrol ='Next' or name='Ret')
+  and (name!='arglist')
+
+--Single Stack OpCodes
+
+-- once a stack has a variable:
+-- can store locals, args, perform unary operations(convert, negate, not), stack manipulation (dup, pop), and utility ckfinite.
+
+  select * from vwOpCode oc 
+  where 
+  oc.StackBehaviourPop='Pop1' -- one value is popped of the stack
+  and operandType='inlinenone'
+  and (flowcontrol ='Next' or name='Ret')
+  and (name!='refanytype')
+
+ -- remaining inlinenone -- varpop(includes ret), popi (confrim these load pointers), Popi_popi, 
+  select * from vwOpCode oc 
+  where 
+  oc.StackBehaviourPop not in('Pop0', 'Pop1') -- no values are popped off the stack
+  and operandType='inlinenone'
+  and (flowcontrol ='Next' or name='Ret')
+
+  --popi deals with pointers, is there special handling in the engine?
+
+  --After working through and classifying these will need to move on to work with invariables.
+  Will need an inlinve variable generator for operandtype!=inlineline.
+
+  could be useful to have text classified non inline operand learning accessible.
+	this could be used to allow natural language explanations for working with inline variables.
+
+break learning into flow control and array manipulute.
+	ld_loc_s st_locs_ ld_arg_s st_arg_s
+	and flow control branch, cond_branch
+		begin with byte ranges (8 bit):
+			ShortInlineBrTarget
+			ShortInlineI
+			ShortInlineVar
+		move onto short:
+			InlineVar
+		then 32 bit ints
+			InlineBrTarget
+			InlineField
+			InlineI
+			InlineMethod
+			InlineSig
+			InlineString
+			InlineSwitch
+			InlineTok
+			InlineType
+		then 64 bit int:
+			InlineI8
+		then 32 bit float
+			ShortInlineR
+		finally 64 bit float
+			InlineR
+
+Will likely need better q-learning. more successful paths will be selected once smart generation is implemented
+	need to make sure they aren't hit with negative rewards because they are the more chose path.
+	
+Optimization: can brute force pure number combinations be generated and fed to a neural network using mass computation
+	without the need to generate and test individual sequences sequential.
+	Even as an initialization step to provide a generate target area for random/genetic exploration.
+
+Fixed: QMaze on no-op starting point because qualities were not being set in rank 0.
+	need to make sure it can be walked to terminate. Intitial results
+
+
+---------------------
+
+	throwing execption in ILEngine slows execution an order of a magnitude. Need to instead set an error state for training.
+
+
+
+

@@ -38,6 +38,8 @@ namespace UIR
 
         public static void Main(string[] args)
         {
+            //QOpCodeLearningProgram.TestExecution();
+            QOpCodeLearningProgram.Run();
             Operators.AddOpTest();
             LiquisticArraySortTest.LinquisticSort();
             LiquisticArraySortTest.LinquisticSortReverse();

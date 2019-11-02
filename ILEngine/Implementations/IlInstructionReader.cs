@@ -17,6 +17,8 @@ namespace ILEngine
             var ms = new MemoryStream(byteCode);
             var br = new BinaryReader(ms);
             long idx = 0;
+            const byte b254 = 254;
+            const short prefix1 = -512;
             while (ms.Position < ms.Length)
             {
                 idx = ms.Position;
@@ -27,7 +29,7 @@ namespace ILEngine
                 {
                     var second = br.ReadByte();
 
-                    var shortVal = (short)((((ushort)first) << 8) + (second));
+                    var shortVal = (short)((((ushort)first) << 8) + (second));// const sthort
                     code = OpCodeLookup.GetILOpcode(shortVal);
                 }
                 var instruction = new IlInstruction { OpCode = code, ByteIndex = idx };

@@ -171,7 +171,7 @@ namespace ILEngineTests
             var irTests = new ILEngine.Tests.IlInstructionReaderTests();
             irTests.ConvertIConvertibleByteCodeTest();
 
-            var t= ArgIterator
+            //var t= ArgIterator
 
 
 

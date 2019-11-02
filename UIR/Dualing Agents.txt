@@ -1,0 +1,37 @@
+﻿Each agent is given empty stack operations as a base generator
+	nop, ret, ldnull, ldc.i4.m1,ldc.i4.0 -ldc.i4.8
+
+Give each other random input and compete for best algo.
+
+from base generator, can move to unary and binary operands to make more complex.
+
+move onto build arguments
+	-> how? an api (text/json driven?)
+
+move onto build il variables (more strongly typed {name, index, value, type}
+		-> how? an api (text/json driven?)
+
+options for building arguments
+	-> provide token resolver api as builtin move.
+	-> bruteforce tokens after learning binary operations
+		-> ResolveFieldToken,ResolveMemberToken,ResolveMethodToken,ResolveSignatureToken,ResolveStringToken,ResolveTypeToken
+
+:: sequence:
+	return newarr token[]
+		getrandomtoken
+			-enumerate binary int operators
+				-> push binary opcode (stack.pop(), stack.pop() )
+					-> generate argument 1 push onto stack
+					-> generate argument 2 push onto stack.
+				=> returns exception or type token
+			- on success returns new array[] {type=ResolveTypeToken(getrandomtoken())}
+	calls execute(instructions, args) <- how does this happen. Need dynamic msil api. 
+		right now can only generate opcodes. need to be able to generate msil code with argument options.
+		needs api generate instruction:
+			right now random move returns index to opcode
+			need random move returns indext to opcode.
+				then if opcode has args
+					generate random argument.
+
+with ability to manipulate arguments, inline operands become possible.
+
