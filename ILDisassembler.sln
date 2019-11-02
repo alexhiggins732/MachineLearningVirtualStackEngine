@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IlDasmLauncher", "IlDasmLauncher\IlDasmLauncher.csproj", "{BB5A4338-FC3F-428E-AE20-355A2367C900}"
 EndProject
@@ -26,6 +26,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IlVmModel", "IlVmModel\IlVmModel.csproj", "{8E40C85B-4FB9-4179-B3C0-FCDD03D43EF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILEngineTests", "ILEngineTests\ILEngineTests.csproj", "{CDB3A180-21CF-46C4-856A-7FC574560AD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLEnvironment", "MLEnvironment\MLEnvironment.csproj", "{80B92625-1621-4C4E-BCC8-49E9653F1D34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLEnvironmentTests", "Tests\MLEnvironmentTests\MLEnvironmentTests.csproj", "{7030E8B0-2534-4FF8-BE8E-7418164B228B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLTestDataGenerator", "MLTestDataGenerator\MLTestDataGenerator.csproj", "{7D6FD013-1325-41DC-85D6-AEE749C8FBEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +83,18 @@ Global
 		{CDB3A180-21CF-46C4-856A-7FC574560AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDB3A180-21CF-46C4-856A-7FC574560AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDB3A180-21CF-46C4-856A-7FC574560AD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80B92625-1621-4C4E-BCC8-49E9653F1D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80B92625-1621-4C4E-BCC8-49E9653F1D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80B92625-1621-4C4E-BCC8-49E9653F1D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80B92625-1621-4C4E-BCC8-49E9653F1D34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7030E8B0-2534-4FF8-BE8E-7418164B228B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7030E8B0-2534-4FF8-BE8E-7418164B228B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7030E8B0-2534-4FF8-BE8E-7418164B228B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7030E8B0-2534-4FF8-BE8E-7418164B228B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D6FD013-1325-41DC-85D6-AEE749C8FBEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D6FD013-1325-41DC-85D6-AEE749C8FBEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D6FD013-1325-41DC-85D6-AEE749C8FBEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D6FD013-1325-41DC-85D6-AEE749C8FBEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -160,7 +160,15 @@ namespace ILEngineTests
             var result_Add_Ovf = test_Add_Ovf.Invoke(null, new object[] { uint.MaxValue, 2u });
 
             var test_Add_Ovf_Un = IlMethodBuilder.Compile_Add_Ovf_Un(typeof(uint), typeof(uint), typeof(uint));
-            var result_Add_Ovf_Un = test_Add_Ovf_Un.Invoke(null, new object[] { uint.MaxValue, 2u });
+            try
+            {
+                var result_Add_Ovf_Un = test_Add_Ovf_Un.Invoke(null, new object[] { uint.MaxValue, 2u });
+            }
+            catch (System.Reflection.TargetInvocationException ae)
+            {
+                Console.WriteLine(ae.InnerException.Message);
+            }
+
 
             var test = new ILEngineTests.IlinstructionEngineOpcodeTests();
             test.CompiledOpCodeTests();
@@ -171,7 +179,7 @@ namespace ILEngineTests
             var irTests = new ILEngine.Tests.IlInstructionReaderTests();
             irTests.ConvertIConvertibleByteCodeTest();
 
-            var t= ArgIterator
+            //var t= ArgIterator
 
 
 
