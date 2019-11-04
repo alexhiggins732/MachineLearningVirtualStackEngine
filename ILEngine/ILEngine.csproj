@@ -35,6 +35,9 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -58,6 +61,7 @@
     <Compile Include="Implementations\ActionExecutionResult.cs" />
     <Compile Include="Implementations\ActionTimeoutException.cs" />
     <Compile Include="Implementations\ActionTimeoutExtensions.cs" />
+    <Compile Include="Implementations\DefaultILInstructionGenerator.cs" />
     <Compile Include="Implementations\IIlInstructionResolver.cs" />
     <Compile Include="Implementations\IlEngineWithDiagnostics.cs" />
     <Compile Include="Implementations\IlInstructionReader.cs" />
@@ -80,6 +84,7 @@
     <Compile Include="Models\ILOpcodeValues.cs" />
     <Compile Include="Models\OpCodeConstructorFlagMasks.cs" />
     <Compile Include="Models\OpCodeLookup.cs" />
+    <Compile Include="Models\OpCodeMetaModel.cs" />
     <Compile Include="Models\OpcodeValueAttribute.cs" />
     <Compile Include="OpCodeFilters.cs" />
     <Compile Include="Program.cs" />
@@ -87,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Models\OpCodeMetaModel.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

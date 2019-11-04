@@ -74,10 +74,7 @@ namespace UIR
         static Random rnd = new Random(1);
         public static void Run()
         {
-            var t = Type.GetType("System.Object");
-            var defaults = Activator.CreateInstance(t);
-            var floatName = typeof(float).FullName;
-            Tester.TestStackFrameBuilder();
+
             Console.WriteLine("Beginning q-learning maze");
 
             Console.WriteLine("Setting up state");

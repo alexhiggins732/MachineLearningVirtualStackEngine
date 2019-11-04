@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IlDasmLauncher", "IlDasmLauncher\IlDasmLauncher.csproj", "{BB5A4338-FC3F-428E-AE20-355A2367C900}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IlVmModel", "IlVmModel\IlVmModel.csproj", "{8E40C85B-4FB9-4179-B3C0-FCDD03D43EF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILEngineTests", "ILEngineTests\ILEngineTests.csproj", "{CDB3A180-21CF-46C4-856A-7FC574560AD5}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ILRuntimeDbProject", "..\..\ILRuntimeDbProject\ILRuntimeDbProject\ILRuntimeDbProject.sqlproj", "{1403184C-3503-4589-96A7-59E22CD17110}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,12 @@ Global
 		{CDB3A180-21CF-46C4-856A-7FC574560AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDB3A180-21CF-46C4-856A-7FC574560AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDB3A180-21CF-46C4-856A-7FC574560AD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1403184C-3503-4589-96A7-59E22CD17110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1403184C-3503-4589-96A7-59E22CD17110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1403184C-3503-4589-96A7-59E22CD17110}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1403184C-3503-4589-96A7-59E22CD17110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1403184C-3503-4589-96A7-59E22CD17110}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1403184C-3503-4589-96A7-59E22CD17110}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

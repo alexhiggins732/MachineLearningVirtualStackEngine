@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Dapper;
+using ILEngine.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -35,9 +39,25 @@ namespace UIR
 
         }
 
+        static void saveMetaModel()
+        {
+            var path = @"C:\Users\Alexander\Source\Repos\alexhiggins732\MachineLearningVirtualStackEngine\ILEngine\Models\OpCodeMetaModel.json";
+            List<OpCodeMetaModel> metaModels;
+          
+            using (var conn = new SqlConnection("server=.;Initial Catalog=ILRuntime;Integrated Security=true;"))
+            {
+                metaModels = conn.Query<OpCodeMetaModel>("select * from [vwOpCodeFullMeta]").ToList();
 
+            }
+            var json = JsonConvert.SerializeObject(metaModels, Formatting.Indented);
+            File.WriteAllText(path, json);
+        }
         public static void Main(string[] args)
         {
+          
+            var metaModels = OpCodeMetaModel.OpCodeMetas;
+            var metaLines = string.Join("\r\n", metaModels.Select(x => x.ToString()));
+            saveMetaModel();
             //QOpCodeLearningProgram.TestExecution();
             QOpCodeLearningProgram.Run();
             Operators.AddOpTest();
@@ -60,7 +80,7 @@ namespace UIR
             //var ex= Expression.Break
 
             bool loopstate = true;
-            Action init = () =>  enumerator = l.GetEnumerator(); 
+            Action init = () => enumerator = l.GetEnumerator();
             Func<bool> eval = () => (loopstate = enumerator.MoveNext());
             Action body = () => Console.WriteLine(enumerator.Current);
             Action inc = () => { };
