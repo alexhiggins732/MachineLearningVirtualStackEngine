@@ -21,13 +21,13 @@ namespace ILEngine.Implementations
         }
         public static ActionExecutionResult WithTimeout(this Action action, int timeoutSeconds)
         {
-            var result = new ActionExecutionResult();
+            var result = new ActionExecutionResult { Action = action };
             TimeSpan timeout = TimeSpan.FromSeconds(timeoutSeconds);
             using (var src = new CancellationTokenSource())
             {
                 var startParams = new ParameterizedThreadStart(ExecuteAction);
                 var t = new Thread(startParams);
-                t.Start(action);
+                t.Start(result);
                 var threadTask = Task.Run(() => t.Join());
                 Task.WaitAny(threadTask, Task.Delay(timeout, src.Token));
                 if (threadTask.IsCompleted)

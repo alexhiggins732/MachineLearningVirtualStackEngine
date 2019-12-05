@@ -63,8 +63,8 @@ namespace UIR
             var result = IlStackFrameBuilder.BuildAndExecute(opcodes);
 
             opcodes.Add(OpCodes.Ldarg_0);
-           
-            var result2 = IlStackFrameBuilder.BuildAndExecute(opcodes, args:new object[] { 1 });
+
+            var result2 = IlStackFrameBuilder.BuildAndExecute(opcodes, args: new object[] { 1 });
             System.Diagnostics.Debug.Assert(((int)result2.ReturnResult) == 1);
         }
     }
@@ -92,9 +92,37 @@ namespace UIR
             double learnRate = .5;
             int maxEpochs = 100000;
 
-            var args = new dynamic[] { "hello world" };
-            var expected = args[0];
-            Train(qMaze, rewardMatrix, qualityMaxtrix, qMaze.Goal, gamma, learnRate, maxEpochs, expected, args);
+            //var args = new dynamic[] { "hello world" };
+
+            var argList = new List<object>();
+            argList.Add(new[] { 1, 2 });
+            var expected = new[] { 2, 1 };// args[0];
+
+
+            var hardCoded = new List<OpCode>();
+
+            hardCoded.Add(OpCodes.Ldarg_0);
+            hardCoded.Add(OpCodes.Ldc_I4_1);
+            hardCoded.Add(OpCodes.Ldarg_0);
+            hardCoded.Add(OpCodes.Ldc_I4_0);
+            hardCoded.Add(OpCodes.Ldelem);
+
+
+            hardCoded.Add(OpCodes.Ldarg_0);
+            hardCoded.Add(OpCodes.Ldc_I4_0);
+            hardCoded.Add(OpCodes.Ldarg_0);
+            hardCoded.Add(OpCodes.Ldc_I4_1);
+            hardCoded.Add(OpCodes.Ldelem);
+
+            hardCoded.Add(OpCodes.Stelem);
+            hardCoded.Add(OpCodes.Stelem);
+            hardCoded.Add(OpCodes.Ldarg_0);
+            hardCoded.Add(OpCodes.Ret);
+
+            var hcResult = IlStackFrameBuilder.BuildAndExecute(hardCoded, args: argList.ToArray());
+
+
+            Train(qMaze, rewardMatrix, qualityMaxtrix, qMaze.Goal, gamma, learnRate, maxEpochs, expected, argList.ToArray());
 
             Console.WriteLine("Done.");
             //Print(qualityMaxtrix);
@@ -228,7 +256,7 @@ end-loop
       */
 
             var stack = new Stack<object>();
-            IComparable rewardValue = expectedResult;
+            dynamic rewardValue = expectedResult;
             int maxOpCodeLength = 10;
             for (int epoch = 0; epoch < maxEpochs; ++epoch)
             {
@@ -284,19 +312,20 @@ end-loop
                     double reward = -.1;
                     if (nextState == QOpCodeLearingGenerator.RetIndex)
                     {
-                        var result = ExecuteOpCodes(l, timeoutSeconds: 3, args);
-                        if (result.Error != null) // need to penalize errors.
+                        var frame = IlStackFrameBuilder.BuildAndExecute(l, 3, args: args);
+                        if (frame.Exception != null)
                         {
                             reward = -.2;
                         }
-                        if (result != null)
+                        else if (frame.ReturnResult != null)
                         {
-                            if (result.Success && result.Result != null)
+                            var type = frame.ReturnResult.GetType();
+                            var expectedType = expectedResult.GetType();
+                            if (type == expectedType)
                             {
-                                var type = result.Result.GetType();
                                 try
                                 {
-                                    if (result.Result == expectedResult)
+                                    if (frame.ReturnResult == expectedResult)
                                     {
                                         reward = 1;
                                         var rewardSteps = string.Join(", ", l.ToArray());
@@ -307,10 +336,35 @@ end-loop
                                 {
 
                                 }
-
-
                             }
                         }
+                        //var result = ExecuteOpCodes(l, timeoutSeconds: 3, args);
+                        //if (result.Error != null) // need to penalize errors.
+                        //{
+                        //    reward = -.2;
+                        //}
+                        //else if (result != null)
+                        //{
+                        //    if (result.Success && result.Result != null)
+                        //    {
+                        //        var type = result.Result.GetType();
+                        //        try
+                        //        {
+                        //            if (result.Result == expectedResult)
+                        //            {
+                        //                reward = 1;
+                        //                var rewardSteps = string.Join(", ", l.ToArray());
+                        //                Console.WriteLine($"Found reward {rewardSteps}.");
+                        //            }
+                        //        }
+                        //        catch (Exception ex)
+                        //        {
+
+                        //        }
+
+
+                        //    }
+                        //}
                     }
 
                     quality[currState][nextState] =

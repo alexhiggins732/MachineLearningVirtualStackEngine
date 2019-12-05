@@ -663,7 +663,7 @@ namespace ILEngine.Tests
         }
 
         [TestMethod()]
-        public void ExecuteTypedTest1()
+        public void ExecuteMakei1Array()
         {
             Func<I1[]> makei1Array = () =>
             {
@@ -675,7 +675,10 @@ namespace ILEngine.Tests
 
             var engine = new ILEngine.IlInstructionEngine();
             var i1result = engine.ExecuteTyped<I1[]>(makei1Array.Method, new object[] { null });
-
+        }
+        [TestMethod()]
+        public void ExecuteMakeUShortArray()
+        { 
             Func<ushort[]> makeushort = () =>
             {
                 var result = new ushort[5];
@@ -693,10 +696,35 @@ namespace ILEngine.Tests
             };
 
             var mus = makeushort();
-
-
-
+            var engine = new ILEngine.IlInstructionEngine();
             var ccresult = engine.ExecuteTyped<ushort[]>(makeushort.Method, new object[] { null });
+        }
+        [TestMethod()]
+        public void ExecuteGetUShortFromArray()
+        {
+            Func<ushort> getushort = () =>
+            {
+                var result = new ushort[5];
+                byte a = 1;
+                sbyte b = 2;
+                int i = 3;
+                short s = 4;
+                ushort u = 5;
+                result[0] = a;
+                result[1] = (ushort)b;
+                result[2] = (ushort)i;
+                result[3] = (ushort)s;
+                result[4] = u;
+                return result[4];
+            };
+            var engine = new ILEngine.IlInstructionEngine();
+            var ccgetresult = engine.ExecuteTyped<ushort[]>(getushort.Method, new object[] { null });
+
+
+        }
+        [TestMethod()]
+        public void ExecuteTestLabeledLoop ()
+        {
 
 
             Func<int> testLabeledLoop = () =>
@@ -708,7 +736,7 @@ namespace ILEngine.Tests
                     goto start;
                 return i;
             };
-
+            var engine = new ILEngine.IlInstructionEngine();
             var loopResult = engine.ExecuteTyped<int>(testLabeledLoop.Method, new object[] { null });
 
         }

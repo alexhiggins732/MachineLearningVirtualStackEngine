@@ -201,7 +201,7 @@ namespace ILEngineTests
 
             tests.ExecuteTypedTest();
 
-            tests.ExecuteTypedTest1();
+            tests.ExecuteTestInline();
 
             tests.ExecuteNativeTests();
             tests.ExecuteTypedNetIO();

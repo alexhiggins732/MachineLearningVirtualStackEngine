@@ -492,17 +492,67 @@ namespace ILEngine.Implementations
                         ((Array)array).SetValue(val, index);
                         break;
                     }
+                case (short)ILOpCodeValues.Ldelem:
                 case (short)ILOpCodeValues.Ldelema:
                 case (short)ILOpCodeValues.Ldelem_I:
                 case (short)ILOpCodeValues.Ldelem_Ref:
-                    throw new NotSupportedException();
+                    {
+
+                        var idx = (int)frame.Stack.Pop();
+                        var array = (Array)frame.Stack.Pop();
+                        var val = array.GetValue(idx);
+                        frame.Stack.Push(val);
+                        break;
+                    }
 
                 case (short)ILOpCodeValues.Ldelem_I1:
+                    {
+
+                        var idx = (int)frame.Stack.Pop();
+                        var array = (Array)frame.Stack.Pop();
+                        var val = array.GetValue(idx);
+                        var target = (sbyte)Convert.ToInt32(val);
+                        frame.Stack.Push(target);
+                        break;
+                    }
                 case (short)ILOpCodeValues.Ldelem_I2:
+                    {
+                        var idx = (int)frame.Stack.Pop();
+                        var array = (Array)frame.Stack.Pop();
+                        var val = array.GetValue(idx);
+                        var target = (short)Convert.ToInt32(val);
+                        frame.Stack.Push(target);
+                        break;
+                    }
                 case (short)ILOpCodeValues.Ldelem_I4:
+                    {
+                        var idx = (int)frame.Stack.Pop();
+                        var array = (Array)frame.Stack.Pop();
+                        var val = array.GetValue(idx);
+                        var target = Convert.ToInt32(val);
+                        frame.Stack.Push(target);
+                        break;
+                    }
                 case (short)ILOpCodeValues.Ldelem_I8:
+                    {
+                        var idx = (int)frame.Stack.Pop();
+                        var array = (Array)frame.Stack.Pop();
+                        var val = array.GetValue(idx);
+                        var target = Convert.ToInt64(val);
+                        frame.Stack.Push(target);
+                        break;
+                    }
 
                 case (short)ILOpCodeValues.Ldelem_U1:
+                    {
+
+                        var idx = (int)frame.Stack.Pop();
+                        var array = (Array)frame.Stack.Pop();
+                        var val = array.GetValue(idx);
+                        var target = (byte)Convert.ToUInt32(val);
+                        frame.Stack.Push(target);
+                        break;
+                    }
                 case (short)ILOpCodeValues.Ldelem_U2:
                     {
 
@@ -513,13 +563,36 @@ namespace ILEngine.Implementations
                         frame.Stack.Push(target);
                         break;
                     }
-
                 case (short)ILOpCodeValues.Ldelem_U4:
+                    {
 
-
+                        var idx = (int)frame.Stack.Pop();
+                        var array = (Array)frame.Stack.Pop();
+                        var val = array.GetValue(idx);
+                        var target = Convert.ToUInt32(val);
+                        frame.Stack.Push(target);
+                        break;
+                    }
                 case (short)ILOpCodeValues.Ldelem_R4:
-                case (short)ILOpCodeValues.Ldelem_R8:
+                    {
 
+                        var idx = (int)frame.Stack.Pop();
+                        var array = (Array)frame.Stack.Pop();
+                        var val = array.GetValue(idx);
+                        var target = Convert.ToSingle(val);
+                        frame.Stack.Push(target);
+                        break;
+                    }
+                case (short)ILOpCodeValues.Ldelem_R8:
+                    {
+
+                        var idx = (int)frame.Stack.Pop();
+                        var array = (Array)frame.Stack.Pop();
+                        var val = array.GetValue(idx);
+                        var target = Convert.ToDouble(val);
+                        frame.Stack.Push(target);
+                        break;
+                    }
 
 
                 case (short)ILOpCodeValues.Conv_I:
@@ -747,8 +820,9 @@ namespace ILEngine.Implementations
 
                             break;
                         default:
-
-                            throw new NotImplementedException();
+                            frame.Exception = new NotImplementedException($"{nameof(OpCode)} {frame.Code} token {tokenType.Name}");
+                            goto Ret;
+                            //throw new NotImplementedException();
                     }
 
 

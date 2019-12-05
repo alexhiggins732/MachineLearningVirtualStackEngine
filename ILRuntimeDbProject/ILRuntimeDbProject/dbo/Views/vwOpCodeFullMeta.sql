@@ -31,9 +31,9 @@ select
 	-- StackBehaviourPush
 	StackBehaviourPush= sbpush.Name,
 	StackBehaviourPushValue= sbpush.Value,
-	StackBehaviourPushCount = sbpop.PushCount,
-	StackBehaviourPushType0= sbpop.PushType0,	
-	StackBehaviourPushType1= sbpop.PushType1,	
+	StackBehaviourPushCount = sbpush.PushCount,
+	StackBehaviourPushType0= sbpush.PushType0,	
+	StackBehaviourPushType1= sbpush.PushType1,	
 	-- Descriptions	
 	OpCodeDescription = oc.Description,
 	FlowControlDescription=fc.Description,

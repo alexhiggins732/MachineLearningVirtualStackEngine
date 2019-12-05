@@ -41,7 +41,7 @@ namespace UIR
 
         static void saveMetaModel()
         {
-            var path = @"C:\Users\Alexander\Source\Repos\alexhiggins732\MachineLearningVirtualStackEngine\ILEngine\Models\OpCodeMetaModel.json";
+            var path = @"C:\Users\alexander.higgins\source\repos\ILDisassembler\ILEngine\Models\OpCodeMetaModel.json";
             List<OpCodeMetaModel> metaModels;
           
             using (var conn = new SqlConnection("server=.;Initial Catalog=ILRuntime;Integrated Security=true;"))
@@ -55,9 +55,9 @@ namespace UIR
         public static void Main(string[] args)
         {
           
-            var metaModels = OpCodeMetaModel.OpCodeMetas;
-            var metaLines = string.Join("\r\n", metaModels.Select(x => x.ToString()));
-            saveMetaModel();
+            //var metaModels = OpCodeMetaModel.OpCodeMetas;
+            //var metaLines = string.Join("\r\n", metaModels.Select(x => x.ToString()));
+            //saveMetaModel();
             //QOpCodeLearningProgram.TestExecution();
             QOpCodeLearningProgram.Run();
             Operators.AddOpTest();
