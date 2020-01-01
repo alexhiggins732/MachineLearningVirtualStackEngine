@@ -2193,6 +2193,8 @@ namespace ILEngine
             frame.Stack.Push(~((dynamic)frame.Stack.Pop()));
 
         }
+
+        //TODO: Unit test for null Frame code.
         public void NotImplemented()
         {
             var opCodeValue = frame?.Code.Value ?? 0;
@@ -2344,6 +2346,8 @@ namespace ILEngine
             throw new OpCodeNotImplementedException(-486);
             //TODO: FlowControlTarget = IlStackFrameFlowControlTarget.Inc;
         }
+
+        //TODO: Unit test for meta data token
         public void Sizeof()
         {
             if(!(frame.Current.Arg is Type typeArg))
@@ -2404,6 +2408,7 @@ namespace ILEngine
             Stelem_I4();
 
         }
+        //TODO: Unit test typed array conversions.
         public void Stelem_I1()
         {
             //handle Stelem_I1
@@ -2421,6 +2426,8 @@ namespace ILEngine
             }
 
         }
+
+        //TODO: Unit test typed array conversions.
         public void Stelem_I2()
         {
             //handle Stelem_I2
@@ -2439,6 +2446,8 @@ namespace ILEngine
             }
 
         }
+
+        //TODO: Unit test typed array conversions.
         public void Stelem_I4()
         {
             //handle Stelem_I4
@@ -2456,6 +2465,8 @@ namespace ILEngine
             }
 
         }
+
+        //TODO: Unit test typed array conversions.
         public void Stelem_I8()
         {
             //handle Stelem_I8
@@ -2473,6 +2484,8 @@ namespace ILEngine
             }
 
         }
+
+        //TODO: Unit test typed array conversions.
         public void Stelem_R4()
         {
             //handle Stelem_R4
@@ -2490,6 +2503,8 @@ namespace ILEngine
             }
 
         }
+
+        //TODO: Unit test typed array conversions.
         public void Stelem_R8()
         {
             //handle Stelem_R8
@@ -2507,6 +2522,8 @@ namespace ILEngine
             }
 
         }
+
+        //TODO: Unit test typed array conversions.
         public void Stelem_Ref()
         {
             //handle Stelem_Ref
@@ -2619,6 +2636,8 @@ namespace ILEngine
             throw new OpCodeNotImplementedException(ILOpCodeValues.Stobj);
 
         }
+
+        //TODO: Unit test invalid argument and IL_[Address] argument
         public void Switch()
         {
 
