@@ -4205,10 +4205,9 @@ namespace ILEngine.Tests
             var c = new FieldTest(0);
             var t = c.GetType();
 
-            var valueField = t.GetField(nameof(c.Value));
+            var valueField = t.GetField(nameof(FieldTest.StaticValue));
 
             var builder = new ILInstructionBuilder();
-            builder.Write(ILOpCodeValues.Ldobj, c);
             builder.Write(ILOpCodeValues.Ldc_I4_1);
             builder.Write(ILOpCodeValues.Stsfld, valueField.MetadataToken);
             builder.Write(ILOpCodeValues.Ret);
@@ -4217,16 +4216,16 @@ namespace ILEngine.Tests
             var frame = Build(builder.Instructions);
             frame.Resolver = new ILInstructionResolver(t.Module);
             Execute(frame);
-            Assert.IsTrue(c.Value == 1);
+            Assert.IsTrue(FieldTest.StaticValue == 1);
             AssertEmptyStackWithResult(frame, null);
 
-            c.Value = 0;
-            builder.Instructions[1] = ILInstruction.Create(ILOpCodeValues.Ldc_I4_2);
-            builder.Instructions[2] = ILInstruction.Create(ILOpCodeValues.Stsfld, valueField);
+            FieldTest.StaticValue = 0;
+            builder.Instructions[0] = ILInstruction.Create(ILOpCodeValues.Ldc_I4_2);
+            builder.Instructions[1] = ILInstruction.Create(ILOpCodeValues.Stsfld, valueField);
             Execute(frame);
 
             //Test resolving and setting field via FieldInfo reference
-            Assert.IsTrue(c.Value == 2);
+            Assert.IsTrue(FieldTest.StaticValue == 2);
             AssertEmptyStackWithResult(frame, null);
         }
 
