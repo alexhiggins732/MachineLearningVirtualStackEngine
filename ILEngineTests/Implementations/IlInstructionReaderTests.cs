@@ -178,28 +178,6 @@ namespace ILEngine.Implementations.Tests
 
         }
 
-        [TestMethod]
-        public void ReadILMethodBody()
-        {
-            var ilString = @"
-IL_0000: ldarg.0
-IL_0001: brtrue.s IL_000e
-IL_0003: ldstr ""structure""
-IL_0008: newobj instance void System.ArgumentNullException::.ctor(string)
-IL_000d: throw
-IL_000e: ldarg.0
-IL_000f: callvirt instance class System.Type System.Object::GetType()
-IL_0014: ldc.i4.1
-IL_0015: call int32 System.Runtime.InteropServices.Marshal::SizeOfHelper(class System.Type, bool)
-IL_001a: ret";
-            var instructions = ILInstructionReader.FromILMethodBodyString(ilString);
-
-            var frame = Build(instructions.ToArray());
-            frame.Args = new object[] { 1 };
-            Execute(frame);
-            AssertEmptyStackWithResult(frame, 4);
-        }
-
         [TestMethod()]
         public void TestReadInlineBrTarget()
         {
@@ -385,11 +363,7 @@ IL_001a: ret";
         [TestMethod()]
         public void TestReadInlineSig()
         {
-            TestReadInlineSigMethod2();
-            var method = this
-               .GetType()
-               .GetMethod(nameof(TestReadInlineSigMethod2), BindingFlags.Public | BindingFlags.Static);
-            TestFromMethod(() => method, OperandType.InlineSig);
+            throw new NotImplementedException();
         }
 
 

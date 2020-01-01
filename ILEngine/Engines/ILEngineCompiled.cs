@@ -2346,8 +2346,13 @@ namespace ILEngine
         }
         public void Sizeof()
         {
-            // Missing: Sizeof
-            throw new OpCodeNotImplementedException(-484);
+            if(!(frame.Current.Arg is Type typeArg))
+            {
+                var typeToken = Convert.ToInt32(frame.Current.Arg);
+                typeArg = frame.ResolveTypeToken(typeToken);
+            }
+            var sizeOf = System.Runtime.InteropServices.Marshal.SizeOf(typeArg);
+            frame.Stack.Push(sizeOf);
 
         }
         public void Shl()

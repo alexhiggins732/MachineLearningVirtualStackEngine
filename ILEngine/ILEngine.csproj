@@ -65,7 +65,6 @@
     <Compile Include="Implementations\ActionExecutionResult.cs" />
     <Compile Include="Implementations\ActionTimeoutException.cs" />
     <Compile Include="Implementations\ActionTimeoutExtensions.cs" />
-    <Compile Include="Implementations\ILStringReader.cs" />
     <Compile Include="Interfaces\IOpCodeEngine.cs" />
     <Compile Include="Loggers\ConsoleLogger.cs" />
     <Compile Include="Loggers\DebugLogger.cs" />

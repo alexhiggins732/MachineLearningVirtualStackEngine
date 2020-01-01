@@ -3370,21 +3370,21 @@ namespace ILEngine.Tests
             var c = new FieldTest(1);
             var t = c.GetType();
 
-            var valueField = t.GetField(nameof(c.Value));
-
+            var valueField = t.GetField(nameof(FieldTest.StaticValue));
+            Assert.IsNotNull(valueField, $"Failed to resolve {nameof(FieldTest)}.{nameof(FieldTest.StaticValue)}");
+            
             var builder = new ILInstructionBuilder();
-            builder.Write(ILOpCodeValues.Ldobj, c);
             builder.Write(ILOpCodeValues.Ldsfld, valueField.MetadataToken);
             builder.Write(ILOpCodeValues.Ret);
             var frame = Build(builder.Instructions);
             frame.Resolver = new ILInstructionResolver(t.Module);
             Execute(frame);
-            AssertEmptyStackWithResult(frame, c.Value);
+            AssertEmptyStackWithResult(frame, FieldTest.StaticValue);
 
-            c.Value = 2;
-            builder.Instructions[1] = ILInstruction.Create(ILOpCodeValues.Ldsfld, valueField);
+            FieldTest.StaticValue = 2;
+            builder.Instructions[0] = ILInstruction.Create(ILOpCodeValues.Ldsfld, valueField);
             Execute(frame);
-            AssertEmptyStackWithResult(frame, c.Value);
+            AssertEmptyStackWithResult(frame, FieldTest.StaticValue);
         }
 
         [TestMethod()]
@@ -3393,21 +3393,21 @@ namespace ILEngine.Tests
             var c = new FieldTest(1);
             var t = c.GetType();
 
-            var valueField = t.GetField(nameof(c.Value));
+            var valueField = t.GetField(nameof(FieldTest.StaticValue));
+            Assert.IsNotNull(valueField, $"Failed to resolve {nameof(FieldTest)}.{nameof(FieldTest.StaticValue)}");
 
             var builder = new ILInstructionBuilder();
-            builder.Write(ILOpCodeValues.Ldobj, c);
             builder.Write(ILOpCodeValues.Ldsflda, valueField.MetadataToken);
             builder.Write(ILOpCodeValues.Ret);
             var frame = Build(builder.Instructions);
             frame.Resolver = new ILInstructionResolver(t.Module);
             Execute(frame);
-            AssertEmptyStackWithResult(frame, c.Value);
+            AssertEmptyStackWithResult(frame, FieldTest.StaticValue);
 
-            c.Value = 2;
-            builder.Instructions[1] = ILInstruction.Create(ILOpCodeValues.Ldsflda, valueField);
+            FieldTest.StaticValue = 2;
+            builder.Instructions[0] = ILInstruction.Create(ILOpCodeValues.Ldsflda, valueField);
             Execute(frame);
-            AssertEmptyStackWithResult(frame, c.Value);
+            AssertEmptyStackWithResult(frame, FieldTest.StaticValue);
         }
 
         [TestMethod()]

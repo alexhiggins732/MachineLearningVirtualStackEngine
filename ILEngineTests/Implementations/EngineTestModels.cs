@@ -97,6 +97,7 @@ namespace ILEngine.Tests
     public class FieldTest
     {
         public int Value;
+        public static int StaticValue;
         public FieldTest() { }
         public FieldTest(int value)
         {

@@ -139,9 +139,5 @@ namespace ILEngine
 
         public static string ToString(List<ILInstruction> ilStream) => string.Join("\r\n", Enumerable.Range(0, ilStream.Count).Select(i => $"{i}: {ilStream[i]}"));
 
-        public static List<ILInstruction> FromILMethodBodyString(string ilString)
-        {
-            return ILStringReader.ReadMethodBody(ilString);
-        }
     }
 }
