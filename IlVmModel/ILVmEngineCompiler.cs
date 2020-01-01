@@ -6,15 +6,15 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IlVmModel
+namespace ILVmModel
 {
-    public class IlVmAssemblyBuilder
+    public class ILVmAssemblyBuilder
     {
         public string AssemblyName { get; protected set; }
         public AssemblyBuilder AssemblyBuilder { get; set; }
         public string AssemblyPath { get; private set; }
         public ModuleBuilder ModuleBuilder { get; private set; }
-        public IlVmAssemblyBuilder() : this("IlVm")
+        public ILVmAssemblyBuilder() : this("IlVm")
         {
             var asmName = new AssemblyName("MsilEngine");
             AppDomain domain = AppDomain.CurrentDomain;
@@ -28,10 +28,10 @@ namespace IlVmModel
                  AssemblyBuilder.DefineDynamicModule(asmName.Name,
                     AssemblyPath, true);
         }
-        public IlVmAssemblyBuilder(string assemblyName) => this.AssemblyName = assemblyName;
+        public ILVmAssemblyBuilder(string assemblyName) => this.AssemblyName = assemblyName;
 
     }
-    public class ILVmEngineCompiler : IlVmAssemblyBuilder
+    public class ILVmEngineCompiler : ILVmAssemblyBuilder
     {
         private TypeBuilder typeBuilder;
         public TypeBuilder TypeBuilder => typeBuilder ?? (typeBuilder = ModuleBuilder.DefineType(TypeName, TypeAttributes.Public));

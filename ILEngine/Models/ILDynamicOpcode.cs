@@ -88,23 +88,5 @@ namespace ILEngine
         /// <param name="opCodeFlags">Constructor flags as defined in <see cref="OpCodeConstructorFlags"/></param>
         /// <returns></returns>
         public static OpCode OpCode(short opCodeValue, int opCodeFlags) => (OpCode)OpCodeConstructor.Invoke(new object[] { opCodeValue, opCodeFlags });
-
-
-        /// <summary>
-        /// Create a new instance of a <see cref="System.Reflection.Emit.OpCode"/>
-        /// </summary>
-        /// <param name="opCodeValue">Short value representing an internal <see cref="System.Reflection.Emit.OpCodeValues"/></param>
-        /// <param name="opCodeFlags">Constructor flags as defined in <see cref="OpCodeConstructorFlags"/></param>
-        /// <returns></returns>
-        public static OpCode OpCode(int opCodeValue, int opCodeFlags) => (OpCode)OpCodeConstructor.Invoke(new object[] { opCodeValue, opCodeFlags });
-
-
-        /// <summary>
-        /// Create a new instance of a <see cref="System.Reflection.Emit.OpCode"/>
-        /// </summary>
-        /// <param name="opCodeValue"><see cref="ILOpCodeValues"/> value representing an internal <see cref="System.Reflection.Emit.OpCodeValues"/></param>
-        /// <param name="opCodeFlags"></param>
-        /// <returns></returns>
-        public static OpCode OpCode(ILOpCodeValues opCodeValue, int opCodeFlags) => (OpCode)OpCodeConstructor.Invoke(new object[] { (short)opCodeValue, opCodeFlags });
     }
 }

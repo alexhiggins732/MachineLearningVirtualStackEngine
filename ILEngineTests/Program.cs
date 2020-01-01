@@ -1,17 +1,37 @@
-﻿using ILEngine.Tests;
+﻿using ILEngine.Compilers;
+using ILEngine.Implementations.Tests;
+using ILEngine.Tests;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ILEngineTests.ConvertWip;
 
 namespace ILEngineTests
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
 
+        public static void Main(string[] args)
+        {
+            RunUnitTest();
+        }
 
+        static void RunUnitTest()
+        {
+          
+
+            
+
+
+            var test = new ILEngineCompiledTests();
+            test.Cgt_Test();
+            test.Clt_Test();
+        }
         public struct ptr<T>
             where T : struct
         {
@@ -137,52 +157,57 @@ namespace ILEngineTests
 
             }
         }
-        public static void Main(string[] args)
+
+        static void GenerateFrameCode()
+        {
+            var opCodeBodies = ILEngine.CodeGenerator.OpCodeBodyParser.ParseBodyFromIlEngineWithDiagnostics();
+            var binder = ILEngine.CodeGenerator.OpCodeEngineGenerator.StackFrameMethodBinder(opCodeBodies);
+            var frameCode = ILEngine.CodeGenerator.OpCodeEngineGenerator
+                .GenerateFrameEngine("ILEngine.Implementations", "IlEngineCompiled", binder);
+            //TODO:
+            var engineSrceDirectoryPath = Path.GetFullPath("../../../IlEngine");
+            var di = new DirectoryInfo(engineSrceDirectoryPath);
+            if (di.Exists)
+            {
+                var GeneratedPath = Path.Combine(di.FullName, "CodeGeneration/GeneratedCode");
+                if (Directory.Exists(GeneratedPath))
+                {
+                    var dest = Path.Combine(GeneratedPath, "IlEngineCompiled.cs");
+                    File.WriteAllText(dest, frameCode);
+                }
+            }
+
+
+            //File.WriteAllText(resultFile, frameCode);
+
+        }
+        public static void MainOld(string[] args)
         {
 
-            var test_Add = IlMethodBuilder.Compile_Add(typeof(uint), typeof(uint), typeof(uint));
-            var result_Add = test_Add.Invoke(null, new object[] { uint.MaxValue, 2u });
-
-            var test_clt = IlMethodBuilder.CompileBinary(ILEngine.ILOpCodeValues.Clt, typeof(bool), typeof(uint), typeof(uint));
-            var result_test_clt = test_clt.Invoke(null, new object[] { uint.MaxValue, 2u });
-            var result_test_clt2 = test_clt.Invoke(null, new object[] { 2u, uint.MaxValue });
-
-            var test_cgt = IlMethodBuilder.CompileBinary(ILEngine.ILOpCodeValues.Cgt, typeof(bool), typeof(uint), typeof(uint));
-            var result_test_cgt = test_cgt.Invoke(null, new object[] { uint.MaxValue, 2u });
-            var result_test_cgt2 = test_cgt.Invoke(null, new object[] { 2u, uint.MaxValue });
+            GenerateFrameCode();
 
 
-            var test_cgt_un = IlMethodBuilder.CompileBinary(ILEngine.ILOpCodeValues.Cgt_Un, typeof(bool), typeof(uint), typeof(uint));
-            var result_test_cgt_un = test_cgt_un.Invoke(null, new object[] { uint.MaxValue, 2u });
-            var result_test_cgt2_un = test_cgt_un.Invoke(null, new object[] { 2u, uint.MaxValue });
-
-            var test_Add_Ovf = IlMethodBuilder.Compile_Add_Ovf(typeof(uint), typeof(uint), typeof(uint));
-            var result_Add_Ovf = test_Add_Ovf.Invoke(null, new object[] { uint.MaxValue, 2u });
-
-            var test_Add_Ovf_Un = IlMethodBuilder.Compile_Add_Ovf_Un(typeof(uint), typeof(uint), typeof(uint));
-            var result_Add_Ovf_Un = test_Add_Ovf_Un.Invoke(null, new object[] { uint.MaxValue, 2u });
-
-            var test = new ILEngineTests.IlinstructionEngineOpcodeTests();
+            var test = new ILInstructionEngineOpCodeTests();
             test.CompiledOpCodeTests();
 
             var lv = new ILEngine.ILVariable { Index = 0, Value = 2, Type = typeof(int) };
             var lv2 = new ILEngine.ILVariable { Index = 0, Value = 2, Type = typeof(int) };
             var eq = lv.Value == lv2.Value;
-            var irTests = new ILEngine.Tests.IlInstructionReaderTests();
+            var irTests = new ILEngine.Implementations.Tests.ILInstructionReaderTests();
             irTests.ConvertIConvertibleByteCodeTest();
 
-            var t= ArgIterator
+            //var t= ArgIterator
 
 
 
 
-            ILEngine.ILOpcodeInterperterSwitchActionGenerator.GenerateOpCodeJmpTable();
+            ILEngine.CodeGenerator.ILOpcodeInterperterSwitchActionGenerator.GenerateOpCodeJmpTable();
 
 
 
 
             // generate code to implement native MSIL methods using c# dynamics (DLR);
-            var dynCs = ILEngine.ILEngineNativeInstructionGenerator.GenerateDynamicCs();
+            var dynCs = ILEngine.CodeGenerator.ILEngineNativeInstructionGenerator.GenerateDynamicCs();
 
 
 
@@ -196,12 +221,12 @@ namespace ILEngineTests
 
 
 
-            var tests = new IlInstructionEngineTests();
+            var tests = new ILInstructionEngineTests();
             tests.ExecuteTest();
 
             tests.ExecuteTypedTest();
 
-            tests.ExecuteTypedTest1();
+            tests.ExecuteTestInline();
 
             tests.ExecuteNativeTests();
             tests.ExecuteTypedNetIO();

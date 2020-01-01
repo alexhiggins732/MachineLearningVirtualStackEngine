@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UIR</RootNamespace>
     <AssemblyName>UIR</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +37,12 @@
     <StartupObject>UIR.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,11 +56,30 @@
     <Compile Include="Class1.cs" />
     <Compile Include="ControlFlow.cs" />
     <Compile Include="Elements.cs" />
+    <Compile Include="ILRuntimeDbGenerator\DbSeeder.cs" />
     <Compile Include="LambaLoop.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="Operators.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QMsilInstructionGenerator.cs" />
+    <Compile Include="QOpCode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ILEngine\ILEngine.csproj">
+      <Project>{FB3EE32E-C9B5-443B-A0AB-F9CAE1BAFFD5}</Project>
+      <Name>ILEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dualing Agents.txt" />
+    <Content Include="ILRuntimeDbGenerator\ILMetaGenerator.txt" />
+    <Content Include="Improvements brainstorm.txt" />
+    <Content Include="OpcodeImprovements.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

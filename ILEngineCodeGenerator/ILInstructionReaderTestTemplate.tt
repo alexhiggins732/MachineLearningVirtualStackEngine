@@ -1,0 +1,26 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+namespace ILEngine.Implementations.Tests
+{
+	[TestClass()]
+	public class ILInstructionReaderTests
+	{
+<#
+   var values = Enum.GetNames(typeof(System.Reflection.Emit.OperandType));
+            foreach (var value in values)
+            {#>
+
+		[TestMethod()]
+		public void TestRead<#=value#>()
+		{
+		}
+            <#}
+#>
+
+	}
+}

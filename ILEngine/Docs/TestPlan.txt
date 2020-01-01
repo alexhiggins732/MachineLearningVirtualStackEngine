@@ -1,0 +1,16 @@
+﻿OpCode Unit Test:
+	Need complete coverage of ILEngine Opcodes
+	1) OpCodes have been stored to dev database. Bootstrap so database can be recreated/deployed.
+	2) Generate Dictionary<OpCode, Action>() to ensure complete engine coverage.
+	3) Make generator to allow Action dictionary to be inlined into a static engine.
+
+	Alternative:
+		Code Coverage:
+			Can work with static inline engine and assure unit tests cover 100% of the engine.
+			Benefits:
+				Easier to implement.
+			Cons:
+				Need to be able to guarantee engine has switch for all opcodes.
+
+WIP:
+	Refactor unit tests:

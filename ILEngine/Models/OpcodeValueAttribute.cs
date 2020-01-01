@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection.Emit;
 
 namespace ILEngine
@@ -7,12 +8,13 @@ namespace ILEngine
     /// Attribute used to bind Methods to <see cref="System.Reflection.Emit.OpCode"/>
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class OpcodeValueAttribute : Attribute
+    [ExcludeFromCodeCoverage]
+    public class OpCodeValueAttribute : Attribute
     {
         public int OpcodeValue { get; private set; }
         public ILOpCodeValues ILOpcode => (ILOpCodeValues)OpcodeValue;
         public OpCode OpCode => OpCodeLookup.GetILOpcode(OpcodeValue);
-        public OpcodeValueAttribute(int value)
+        public OpCodeValueAttribute(int value)
         {
             this.OpcodeValue = (short)value;
         }

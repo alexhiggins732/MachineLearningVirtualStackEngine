@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 using System.Numerics;
 using System.Reflection;
 
-namespace ILEngineTests.OpCodeTests
+namespace ILEngine.Tests
 {
     [TestClass()]
     public class OpCodeTests
     {
-        private IlInstructionEngine engine = new ILEngine.IlInstructionEngine();
+        private ILInstructionEngine engine = new ILEngine.ILInstructionEngine();
 
 
         public OpCodeTests()
@@ -25,9 +25,9 @@ namespace ILEngineTests.OpCodeTests
         public void TestNop()
         {
 
-            var Instructions = new List<IlInstruction>();
+            var Instructions = new List<ILInstruction>();
             int idx = 0;
-            var instruction = new IlInstruction { OpCode = OpCodes.Nop, ByteIndex = idx };
+            var instruction = new ILInstruction { OpCode = OpCodes.Nop, ByteIndex = idx };
             var result = engine.ExecuteTyped(Instructions, null, null);
             Assert.IsNull(result);
         }
@@ -185,9 +185,10 @@ namespace ILEngineTests.OpCodeTests
                         gen.Emit(op);
                     break;
                 //     The operand is reserved and should not be used.
+#pragma warning disable CS0618 // Type or member is obsolete
                 case OperandType.InlinePhi: // = 6,
+#pragma warning restore CS0618 // Type or member is obsolete
                     throw new NotImplementedException();
-                    break;
                 //     The operand is a 64-bit IEEE floating point number.
                 case OperandType.InlineR: // = 7,
                     gen.Emit(op, (double)0);
@@ -283,7 +284,7 @@ namespace ILEngineTests.OpCodeTests
                 Assert.IsTrue(OpCode.Value == shortValue);
 
                 var il = CompileMethod(OpCode);
-                var ilStream = IlInstructionReader.FromByteCode(il);
+                var ilStream = ILInstructionReader.FromByteCode(il);
                 var first = ilStream.First();
                 Assert.IsTrue(first.OpCode == OpCode);
                 Assert.IsTrue(first.OpCode.Value == shortValue);

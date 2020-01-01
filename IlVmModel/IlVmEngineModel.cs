@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IlVmModel
+namespace ILVmModel
 {
-    public class IlVmEngineModel
+    public class ILVmEngineModel
     {
 
-        public static void Execute(byte[] instructions, IlVmMeta metaModel)
+        public static void Execute(byte[] instructions, ILVmMeta metaModel)
         {
             var pos = -1;
             var max = instructions.Length - 2;
