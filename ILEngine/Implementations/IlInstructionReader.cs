@@ -7,18 +7,22 @@ using System.Reflection;
 
 namespace ILEngine
 {
-    public class IlInstructionReader
+    public class ILInstructionReader
     {
-        public static List<IlInstruction> FromMethod(MethodInfo method) => FromByteCode(method.GetMethodBody().GetILAsByteArray());
-       
-        public static List<IlInstruction> FromByteCode(byte[] byteCode)
+        public static List<ILInstruction> FromMethod(MethodInfo method) => FromByteCode(method.GetMethodBody()?.GetILAsByteArray());
+
+        public static List<ILInstruction> FromByteCode(byte[] byteCode)
         {
-            var result = new List<IlInstruction>();
+            var result = new List<ILInstruction>();
+            //TODO: Unit test for emtpy method bodies. For now just return a NOP|RET.
+            if (byteCode == null || byteCode.Length == 0)
+            {
+                result = (new[] { ILInstruction.NoOp, ILInstruction.Ret }).ToList();
+                return result;
+            }
             var ms = new MemoryStream(byteCode);
             var br = new BinaryReader(ms);
             long idx = 0;
-            const byte b254 = 254;
-            const short prefix1 = -512;
             while (ms.Position < ms.Length)
             {
                 idx = ms.Position;
@@ -32,7 +36,7 @@ namespace ILEngine
                     var shortVal = (short)((((ushort)first) << 8) + (second));// const sthort
                     code = OpCodeLookup.GetILOpcode(shortVal);
                 }
-                var instruction = new IlInstruction { OpCode = code, ByteIndex = idx };
+                var instruction = new ILInstruction { OpCode = code, ByteIndex = idx };
                 switch (code.OperandType)
                 {
 
@@ -60,9 +64,10 @@ namespace ILEngine
                     case OperandType.InlineNone: // = 5,
                         break;
                     //     The operand is reserved and should not be used.
+#pragma warning disable CS0618 // Type or member is obsolete
                     case OperandType.InlinePhi: // = 6,
+#pragma warning restore CS0618 // Type or member is obsolete
                         throw new NotImplementedException();
-                        break;
                     //     The operand is a 64-bit IEEE floating point number.
                     case OperandType.InlineR: // = 7,
                         instruction.Arg = br.ReadDouble();
@@ -79,6 +84,16 @@ namespace ILEngine
                     //     The operand is the 32-bit integer argument to a switch instruction.
                     case OperandType.InlineSwitch: // = 11,
                         instruction.Arg = br.ReadInt32();
+                        var switchLength = (int)instruction.Arg;
+                        var switchByteLength = switchLength * 4;
+                        var jmps = new List<int>();
+                        var target = br.BaseStream.Position + switchByteLength;
+                        while (ms.Position < target)
+                        {
+                            jmps.Add(br.ReadInt32());
+                        }
+                        instruction.Arg = jmps.ToArray();
+
                         break;
                     //     The operand is a FieldRef, MethodRef, or TypeRef token.
                     case OperandType.InlineTok: // = 12,
@@ -117,11 +132,16 @@ namespace ILEngine
                 result.Add(instruction);
 
             }
-
+            //TODO: Add Labels to Instructions;
+            //result[0].SetLabel();
             return result;
         }
 
-        public static string ToString(List<IlInstruction> ilStream) => string.Join("\r\n", Enumerable.Range(0, ilStream.Count).Select(i=> $"{i}: {ilStream[i]}"));
+        public static string ToString(List<ILInstruction> ilStream) => string.Join("\r\n", Enumerable.Range(0, ilStream.Count).Select(i => $"{i}: {ilStream[i]}"));
 
+        public static List<ILInstruction> FromILMethodBodyString(string ilString)
+        {
+            return ILStringReader.ReadMethodBody(ilString);
+        }
     }
 }

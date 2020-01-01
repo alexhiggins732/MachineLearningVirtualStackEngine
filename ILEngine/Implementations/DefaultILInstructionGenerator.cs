@@ -10,12 +10,12 @@ namespace ILEngine
 {
     public class DefaultILInstructionGenerator
     {
-        public static IlInstruction GenerateRandom(OpCodeMetaModel model)
+        public static ILInstruction GenerateRandom(OpCodeMetaModel model)
         {
             var flowcontrol = model.FlowControl;
             var operandBitSize = model.OperandTypeBitSize;
             Enum.TryParse<StackBehaviour>(model.StackBehaviourPop, out StackBehaviour pop);
-            int popCount = 0;
+
             //    /*
 
 
@@ -73,7 +73,7 @@ namespace ILEngine
 
             //    }
 
-            return new IlInstruction();
+            return new ILInstruction();
             
             
         }

@@ -13,12 +13,19 @@ namespace ILEngine.Models
     public class OpCodeMetaModel
     {
         public static List<OpCodeMetaModel> OpCodeMetas;
+        public static Dictionary<short, OpCodeMetaModel> OpCodeMetaDict;
+        public static Dictionary<string, OpCodeMetaModel> OpCodeMetaNativeNameDict;
         static OpCodeMetaModel()
         {
             var json = System.IO.File.ReadAllText(@"Models\OpCodeMetaModel.json");
             OpCodeMetas = JsonConvert.DeserializeObject<List<OpCodeMetaModel>>(json);
+            OpCodeMetaDict = OpCodeMetas.ToDictionary(x => (short)x.OpCodeValue, x => x);
+            OpCodeMetaNativeNameDict = OpCodeMetas.ToDictionary(x => x.OpCode, x => x);
+
         }
-        public static void UpdateModelFromDb(string[] outputPaths, string connection= "server=.;Initial Catalog=ILRuntime;Integrated Security=true;")
+        
+        
+        public static void UpdateModelFromDb(string[] outputPaths, string connection = "server=.;Initial Catalog=ILRuntime;Integrated Security=true;")
         {
 
             List<OpCodeMetaModel> metaModels;
@@ -26,8 +33,8 @@ namespace ILEngine.Models
             using (var conn = new SqlConnection(connection))
             {
                 metaModels = conn.Query<OpCodeMetaModel>("select * from [vwOpCodeFullMeta]").ToList();
-
             }
+
             var json = JsonConvert.SerializeObject(metaModels, Formatting.Indented);
             foreach (var path in outputPaths)
             {

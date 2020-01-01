@@ -8814,7 +8814,7 @@
     "StackBehaviourPushId": 19
   },
   {
-    "ClrName": "exec.msil.i",
+    "ClrName": "Exec_MSIL_I",
     "OpCode": "exec.msil.i",
     "OpCodeValue": 36,
     "OpCodeSize": 1,
@@ -8853,7 +8853,7 @@
     "StackBehaviourPushId": 28
   },
   {
-    "ClrName": "exec.msil.s",
+    "ClrName": "Exec_MSIL_S",
     "OpCode": "exec.msil.s",
     "OpCodeValue": 119,
     "OpCodeSize": 1,

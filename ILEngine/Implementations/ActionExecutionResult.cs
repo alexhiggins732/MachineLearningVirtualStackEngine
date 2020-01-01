@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ILEngine.Implementations
+namespace ILEngine
 {
     public class ActionExecutionResult
     {

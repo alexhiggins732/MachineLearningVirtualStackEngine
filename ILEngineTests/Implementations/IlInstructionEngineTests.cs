@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.Diagnostics;
 using ILEngineTests;
+using static ILEngineTests.ConvertWip;
 
 namespace ILEngine.Tests
 {
@@ -106,7 +107,7 @@ namespace ILEngine.Tests
     }
 
     [TestClass()]
-    public class IlInstructionEngineTests
+    public class ILInstructionEngineTests
     {
         [TestMethod()]
         public void ExecuteTest()
@@ -146,19 +147,19 @@ namespace ILEngine.Tests
 
                 };
 
-                var res = GetAllPoints().SelectMany(x => new[] { x.A, x.B }).ToList();
+                var res = GetAllPoints().Distinct().SelectMany(x => new[] { x.A, x.B }).ToList();
                 return res;
 
             };
 
-            var engine = new ILEngine.IlInstructionEngine();
+            var engine = new ILEngine.ILInstructionEngine();
 
             var expected = linqForEachSelectForSelectMany();
 
             var IlExecuted = engine.ExecuteTyped<List<PointTest>>(linqForEachSelectForSelectMany.Method, linqForEachSelectForSelectMany);
             Assert.IsNotNull(IlExecuted);
             Assert.IsInstanceOfType(IlExecuted, typeof(List<PointTest>));
-            Assert.IsTrue(IlExecuted.Count == expected.Count); // <-- TODO: this could fail if the same point is generated twice
+            Assert.IsTrue(IlExecuted.Count == expected.Count); // <-- TODO: Implemented distinct to deal with duplicate points.
             //Assert.IsTrue(expected.SequenceEqual(IlExecuted)); <-- points are random
 
             ExecuteTestInline1();
@@ -247,7 +248,7 @@ namespace ILEngine.Tests
 
            
 
-            var engine = new ILEngine.IlInstructionEngine();
+            var engine = new ILEngine.ILInstructionEngine();
 
             var expected = UniqueLines();
             var IlExecuted = engine.ExecuteTyped<List<LineTest>>(UniqueLines.Method, UniqueLines.Target);// <-- this fails because the func loads a local variable as an arg even though there is no arg in the func()
@@ -299,7 +300,7 @@ namespace ILEngine.Tests
 
             };
 
-            var engine = new ILEngine.IlInstructionEngine();
+            var engine = new ILEngine.ILInstructionEngine();
 
             var expected = linqForEachSelectForSelectMany();
 
@@ -401,7 +402,7 @@ namespace ILEngine.Tests
 
 
 
-            var engine = new IlInstructionEngine();
+            var engine = new ILInstructionEngine();
 
 
 
@@ -519,7 +520,7 @@ namespace ILEngine.Tests
         public void ExecuteNativeTests()
         {
 
-            var engine = new IlInstructionEngine();
+            var engine = new ILInstructionEngine();
 
             Func<int, short> fnA = (x) => (short)x;
             object objOne = 1;
@@ -632,7 +633,7 @@ namespace ILEngine.Tests
             var dfn_1 = ResolveFn(downloadGoogle);
 
 
-            var engine = new IlInstructionEngine();
+            var engine = new ILInstructionEngine();
             var r_0 = engine.ExecuteTyped(dfn_1, this);
             Assert.IsNotNull(r_0);
             Assert.IsTrue(r_0 is string);
@@ -673,7 +674,7 @@ namespace ILEngine.Tests
 
 
 
-            var engine = new ILEngine.IlInstructionEngine();
+            var engine = new ILEngine.ILInstructionEngine();
             var i1result = engine.ExecuteTyped<I1[]>(makei1Array.Method, new object[] { null });
         }
         [TestMethod()]
@@ -696,7 +697,7 @@ namespace ILEngine.Tests
             };
 
             var mus = makeushort();
-            var engine = new ILEngine.IlInstructionEngine();
+            var engine = new ILEngine.ILInstructionEngine();
             var ccresult = engine.ExecuteTyped<ushort[]>(makeushort.Method, new object[] { null });
         }
         [TestMethod()]
@@ -717,8 +718,10 @@ namespace ILEngine.Tests
                 result[4] = u;
                 return result[4];
             };
-            var engine = new ILEngine.IlInstructionEngine();
-            var ccgetresult = engine.ExecuteTyped<ushort[]>(getushort.Method, new object[] { null });
+            var engine = new ILEngine.ILInstructionEngine();
+            var actual = engine.ExecuteTyped<ushort>(getushort.Method, new object[] { null });
+            ushort expected = 5;
+            Assert.IsTrue(expected == actual, $"ExecuteGetUShortFromArray failed\r\nActual: {actual}\r\n:Expected: {expected}");
 
 
         }
@@ -736,7 +739,7 @@ namespace ILEngine.Tests
                     goto start;
                 return i;
             };
-            var engine = new ILEngine.IlInstructionEngine();
+            var engine = new ILEngine.ILInstructionEngine();
             var loopResult = engine.ExecuteTyped<int>(testLabeledLoop.Method, new object[] { null });
 
         }

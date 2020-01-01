@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ILEngine.Implementations
+namespace ILEngine
 {
     public class ILOperandStack
     {

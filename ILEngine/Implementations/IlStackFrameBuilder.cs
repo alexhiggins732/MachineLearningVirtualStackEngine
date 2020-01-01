@@ -1,25 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Reflection.Emit;
 
-namespace ILEngine.Implementations
+namespace ILEngine
 {
-    public class IlStackFrameBuilder
+    public class ILStackFrameBuilder<TStackFrame> 
+        : IILStackFrameBuilder<TStackFrame> where TStackFrame : IILStackFrame, new()
     {
-        public static IlStackFrameWithDiagnostics Build(List<OpCode> opCodes,
-            IIlInstructionResolver resolver = null,
+        public TStackFrame Build(List<OpCode> opCodes,
+            IILInstructionResolver resolver = null,
             object[] args = null,
             ILVariable[] locals = null)
         {
-            var streamWriter = new IlInstructionWriter(opCodes);
+            var streamWriter = new ILInstructionWriter(opCodes);
             var stream = streamWriter.GetInstructionStream();
             return Build(stream, resolver, args, locals);
         }
-        public static IlStackFrameWithDiagnostics Build(List<IlInstruction> stream,
-            IIlInstructionResolver resolver = null,
+        public TStackFrame Build(List<ILInstruction> stream,
+            IILInstructionResolver resolver = null,
             object[] args = null,
             ILVariable[] locals = null)
         {
-            var result = new IlStackFrameWithDiagnostics
+            var result = new TStackFrame
             {
                 Stream = stream,
                 Resolver = resolver,
@@ -30,16 +31,16 @@ namespace ILEngine.Implementations
         }
 
 
-        public static IlStackFrameWithDiagnostics BuildAndExecute(List<OpCode> opCodes,
-            IIlInstructionResolver resolver = null,
+        public TStackFrame BuildAndExecute(List<OpCode> opCodes,
+            IILInstructionResolver resolver = null,
             object[] args = null,
             ILVariable[] locals = null)
         {
             return BuildAndExecute(opCodes, 0, resolver, args, locals);
         }
 
-        public static IlStackFrameWithDiagnostics BuildAndExecute(List<OpCode> opCodes, int timeout,
-            IIlInstructionResolver resolver = null,
+        public TStackFrame BuildAndExecute(List<OpCode> opCodes, int timeout,
+            IILInstructionResolver resolver = null,
             object[] args = null,
             ILVariable[] locals = null)
         {
@@ -49,17 +50,17 @@ namespace ILEngine.Implementations
         }
 
 
-        public static IlStackFrameWithDiagnostics BuildAndExecute(List<IlInstruction> stream,
-            IIlInstructionResolver resolver = null,
+        public TStackFrame BuildAndExecute(List<ILInstruction> stream,
+            IILInstructionResolver resolver = null,
             object[] args = null,
             ILVariable[] locals = null)
         {
             return BuildAndExecute(stream, 0, resolver, args, locals);
         }
 
-        public static IlStackFrameWithDiagnostics BuildAndExecute(List<IlInstruction> stream,
+        public TStackFrame BuildAndExecute(List<ILInstruction> stream,
             int timeout,
-            IIlInstructionResolver resolver = null,
+            IILInstructionResolver resolver = null,
             object[] args = null,
             ILVariable[] locals = null)
         {
@@ -68,7 +69,79 @@ namespace ILEngine.Implementations
             return frame;
         }
 
-        public static void Execute(IlStackFrameWithDiagnostics frame, int timeout)
+        public void Execute(TStackFrame frame, int timeout)
+        {
+            frame.Execute(timeout);
+        }
+    }
+    
+    public class ILStackFrameBuilder
+    {
+        public static ILStackFrameWithDiagnostics Build(List<OpCode> opCodes,
+            IILInstructionResolver resolver = null,
+            object[] args = null,
+            ILVariable[] locals = null)
+        {
+            var streamWriter = new ILInstructionWriter(opCodes);
+            var stream = streamWriter.GetInstructionStream();
+            return Build(stream, resolver, args, locals);
+        }
+        public static ILStackFrameWithDiagnostics Build(List<ILInstruction> stream,
+            IILInstructionResolver resolver = null,
+            object[] args = null,
+            ILVariable[] locals = null)
+        {
+            var result = new ILStackFrameWithDiagnostics
+            {
+                Stream = stream,
+                Resolver = resolver,
+                Args = args,
+                Locals = locals
+            };
+            return result;
+        }
+
+
+        public static ILStackFrameWithDiagnostics BuildAndExecute(List<OpCode> opCodes,
+            IILInstructionResolver resolver = null,
+            object[] args = null,
+            ILVariable[] locals = null)
+        {
+            return BuildAndExecute(opCodes, 0, resolver, args, locals);
+        }
+
+        public static ILStackFrameWithDiagnostics BuildAndExecute(List<OpCode> opCodes,
+            int timeout,
+            IILInstructionResolver resolver = null,
+            object[] args = null,
+            ILVariable[] locals = null)
+        {
+            var frame = Build(opCodes, resolver, args, locals);
+            Execute(frame, timeout);
+            return frame;
+        }
+
+
+        public static ILStackFrameWithDiagnostics BuildAndExecute(List<ILInstruction> stream,
+            IILInstructionResolver resolver = null,
+            object[] args = null,
+            ILVariable[] locals = null)
+        {
+            return BuildAndExecute(stream, 0, resolver, args, locals);
+        }
+
+        public static ILStackFrameWithDiagnostics BuildAndExecute(List<ILInstruction> stream,
+            int timeout,
+            IILInstructionResolver resolver = null,
+            object[] args = null,
+            ILVariable[] locals = null)
+        {
+            var frame = Build(stream, resolver, args, locals);
+            Execute(frame, timeout);
+            return frame;
+        }
+
+        public static void Execute(ILStackFrameWithDiagnostics frame, int timeout)
         {
             frame.Execute(timeout);
         }

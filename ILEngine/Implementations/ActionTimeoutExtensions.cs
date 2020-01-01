@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ILEngine.Implementations
+namespace ILEngine
 {
     public static class ActionTimeoutExtensions
     {

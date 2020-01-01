@@ -85,7 +85,7 @@ namespace ILEngine
                     }
                     if (args.Length > 3)
                     {
-                        allowedArgs.Add(ILOpCodeValueNativeNames.Ldarg_2);
+                        allowedArgs.Add(ILOpCodeValueNativeNames.Ldarg_3);
                     }
                     filters.Add(x => allowedArgs.Contains(x.Name) || !x.Name.StartsWith("ldarg"));
                 }

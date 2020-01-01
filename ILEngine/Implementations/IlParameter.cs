@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+
 namespace ILEngine
 {
     //TODO: Implement or remove
-    public struct IlParameter
+    [ExcludeFromCodeCoverage]
+    public struct ILParameter
     {
         public string Name;
         public Type Type;

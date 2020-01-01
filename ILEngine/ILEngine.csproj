@@ -8,10 +8,11 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ILEngine</RootNamespace>
     <AssemblyName>ILEngine</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -22,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,7 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -51,58 +52,71 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeGeneration\GeneratedCode\IILOpcodeActionGenerator.cs" />
-    <Compile Include="CodeGeneration\Generators\EnumSwitchGenerator.cs" />
-    <Compile Include="CodeGeneration\Generators\ILNativeInstructionGenerator.cs" />
-    <Compile Include="CodeGeneration\Generators\ILOpcodeInterperterSwitchActionGenerator.cs" />
-    <Compile Include="CodeGeneration\Generators\ILOpCodeValueNativeNameGenerator.cs" />
-    <Compile Include="CodeGeneration\Generators\ILSwitchStub.cs" />
-    <Compile Include="DynamicCompiler.cs" />
+    <Compile Include="Engines\ILEngineBase.cs" />
+    <Compile Include="Engines\ILEngineCompiled.cs" />
+    <Compile Include="Compilers\ILMethod.cs" />
+    <Compile Include="Compilers\ILMethodBuilder.cs" />
+    <Compile Include="Compilers\ILMethodBuilder`1.cs" />
+    <Compile Include="Compilers\DynamicCompiler.cs" />
+    <Compile Include="Exceptions\ILInstructionArgumentException.cs" />
+    <Compile Include="Exceptions\InvalidInstructionsException.cs" />
+    <Compile Include="Exceptions\InvalidOpCodeException.cs" />
+    <Compile Include="Exceptions\OpCodeNotImplementedException.cs" />
     <Compile Include="Implementations\ActionExecutionResult.cs" />
     <Compile Include="Implementations\ActionTimeoutException.cs" />
     <Compile Include="Implementations\ActionTimeoutExtensions.cs" />
-    <Compile Include="Implementations\DefaultILInstructionGenerator.cs" />
-    <Compile Include="Implementations\IIlInstructionResolver.cs" />
-    <Compile Include="Implementations\IlEngineWithDiagnostics.cs" />
-    <Compile Include="Implementations\IlInstructionReader.cs" />
-    <Compile Include="Implementations\IlInstructionResolver.cs" />
-    <Compile Include="Implementations\ILInstructionStreamEngine.cs" />
-    <Compile Include="Implementations\IlCallStack.cs" />
-    <Compile Include="Implementations\IlInstruction.cs" />
-    <Compile Include="Implementations\IlInstructionEngine.cs" />
-    <Compile Include="Implementations\IlInstructionWriter.cs" />
-    <Compile Include="Implementations\ILogger.cs" />
+    <Compile Include="Implementations\ILStringReader.cs" />
+    <Compile Include="Interfaces\IOpCodeEngine.cs" />
+    <Compile Include="Loggers\ConsoleLogger.cs" />
+    <Compile Include="Loggers\DebugLogger.cs" />
+    <Compile Include="Loggers\FileLogger.cs" />
+    <Compile Include="Engines\ILInstructionEngine.cs" />
+    <Compile Include="Implementations\ILInstructionReader.cs" />
+    <Compile Include="Implementations\ILStackFrameFlowControlTarget.cs" />
+    <Compile Include="Implementations\ILStackFrameWithDiagnostics`1.cs" />
+    <Compile Include="Loggers\NullLogger.cs" />
+    <Compile Include="Interfaces\IILStackFrameBuilder.cs" />
+    <Compile Include="Interfaces\IOpCodeActionProvider.cs" />
+    <Compile Include="Interfaces\IILInstructionResolver.cs" />
+    <Compile Include="Implementations\ILInstructionResolver.cs" />
+    <Compile Include="Implementations\ILInstructionBuilder.cs" />
+    <Compile Include="Engines\ILInstructionStreamEngine.cs" />
+    <Compile Include="Implementations\ILInstruction.cs" />
+    <Compile Include="Implementations\ILInstructionWriter.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Implementations\ILOperandStack.cs" />
-    <Compile Include="Implementations\IlParameter.cs" />
-    <Compile Include="Implementations\IlStackFrameBuilder.cs" />
-    <Compile Include="Implementations\IlStackFrameWithDiagnostics.cs" />
+    <Compile Include="Implementations\ILParameter.cs" />
+    <Compile Include="Implementations\ILStackFrameBuilder.cs" />
+    <Compile Include="Implementations\ILStackFrameWithDiagnostics.cs" />
     <Compile Include="Implementations\ILVariable.cs" />
+    <Compile Include="Interfaces\IILStackFrame.cs" />
     <Compile Include="Models\ILDynamicOpcode.cs" />
-    <Compile Include="CodeGeneration\GeneratedCode\ILOpcodeActionCodeBuilder.cs" />
-    <Compile Include="CodeGeneration\GeneratedCode\ILOpcodeActionGeneratorBase.cs" />
     <Compile Include="Models\ILNativeOpCodeNames.cs" />
     <Compile Include="Models\ILOpcodeValues.cs" />
     <Compile Include="Models\OpCodeConstructorFlagMasks.cs" />
     <Compile Include="Models\OpCodeLookup.cs" />
     <Compile Include="Models\OpCodeMetaModel.cs" />
-    <Compile Include="Models\OpcodeValueAttribute.cs" />
+    <Compile Include="Models\OpCodeValueAttribute.cs" />
     <Compile Include="OpCodeFilters.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Docs\TestPlan.txt" />
     <Content Include="Models\OpCodeMetaModel.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IlVmModel\IlVmModel.csproj">
+    <ProjectReference Include="..\IlVmModel\ILVmModel.csproj">
       <Project>{8e40c85b-4fb9-4179-b3c0-fcdd03d43ef7}</Project>
-      <Name>IlVmModel</Name>
+      <Name>ILVmModel</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Factories\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

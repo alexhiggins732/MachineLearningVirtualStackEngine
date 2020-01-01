@@ -1,5 +1,4 @@
 ﻿using ILEngine;
-using ILEngine.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +9,9 @@ namespace UIR
 {
     public class QMsilInstructionGenerator
     {
-        public List<IlInstruction> GetValidInstructions(IlStackFrameWithDiagnostics stackFrame)
+        public List<ILInstruction> GetValidInstructions(ILStackFrameWithDiagnostics stackFrame)
         {
-            var result = new List<IlInstruction>();
+            var result = new List<ILInstruction>();
 
             return result;
         }

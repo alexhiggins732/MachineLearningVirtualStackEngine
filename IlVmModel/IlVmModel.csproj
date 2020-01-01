@@ -7,11 +7,12 @@
     <ProjectGuid>{8E40C85B-4FB9-4179-B3C0-FCDD03D43EF7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IlVmModel</RootNamespace>
-    <AssemblyName>IlVmModel</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <RootNamespace>ILVmModel</RootNamespace>
+    <AssemblyName>ILVmModel</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,12 +45,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ILVmEngineCompiler.cs" />
-    <Compile Include="IlVmEngineModel.cs" />
-    <Compile Include="IlVmMeta.cs" />
+    <Compile Include="ILVmEngineModel.cs" />
+    <Compile Include="ILVmMeta.cs" />
+    <Compile Include="Models\OperandTypeBitSize.cs" />
+    <Compile Include="Models\OperandTypeByteSize.cs" />
+    <Compile Include="Models\VariableCollection.cs" />
+    <Compile Include="Models\VmInstruction.cs" />
+    <Compile Include="Models\VmInstructionArgument.cs" />
+    <Compile Include="Models\VmInstructionArgument`1.cs" />
     <Compile Include="Models\VmMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VmILInterpreter.cs" />
     <Compile Include="VmOpcode\IVmStack.cs" />
+    <Compile Include="VmOpcode\VmOpCodeAdd.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

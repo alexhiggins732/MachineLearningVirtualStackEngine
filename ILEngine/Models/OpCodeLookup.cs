@@ -48,7 +48,7 @@ namespace ILEngine
                 case ILOpCodeValues.Bgt: return 4; //break to the target if the first value is greater than the second
                 case ILOpCodeValues.Bgt_S: return 1; //break to the target if the first value is greater than the second (short)
                 case ILOpCodeValues.Bgt_Un: return 4; // break to target if first value (unsigned int or float) is greater or equal to the second value 
-                case ILOpCodeValues.Bgt_Un_S: return 4;  // break to target if first value (unsigned int or float) is greater or equal to the second value (short)
+                case ILOpCodeValues.Bgt_Un_S: return 1;  // break to target if first value (unsigned int or float) is greater or equal to the second value (short)
                 case ILOpCodeValues.Ble: return 4;  // break to target if the first value is less than or equal to the second.
                 case ILOpCodeValues.Ble_S: return 1;  // break to target if the first value is less than or equal to the second (Short).
                 case ILOpCodeValues.Ble_Un: return 4;  // break to target if the first value (unsigned int or float) is less than or equal to the second.
@@ -59,13 +59,13 @@ namespace ILEngine
                 case ILOpCodeValues.Blt_Un_S: return 1;  // break to target if the first value (unsigned int or float)is less than the second (Short).
                 case ILOpCodeValues.Bne_Un: return 4; // Break to targer if the two values are not equal (unsigned or float).
                 case ILOpCodeValues.Bne_Un_S: return 1; // Break to targer if the two values are not equal (unsigned or float).
-                case ILOpCodeValues.Box: return 0; // converts a value type of an object reference
+                case ILOpCodeValues.Box: return 4; // converts a value type of an object reference
                 case ILOpCodeValues.Br: return 4; // branches to target
                 case ILOpCodeValues.Break: return 0; // tells debugger breakpoing has been hit
-                case ILOpCodeValues.Brfalse: return 0; // break to target if value is false: return 0; null or zero
-                case ILOpCodeValues.Brfalse_S: return 0; // break to target if value is false: return 0; null or zero (short)
-                case ILOpCodeValues.Brtrue: return 0; // break to target if value is true: return 0; not null or non-zero
-                case ILOpCodeValues.Brtrue_S: return 0; // break to target if value is true: return 0; not null or non-zero (short)
+                case ILOpCodeValues.Brfalse: return 4; // break to target if value is false: return 0; null or zero
+                case ILOpCodeValues.Brfalse_S: return 1; // break to target if value is false: return 0; null or zero (short)
+                case ILOpCodeValues.Brtrue: return 4; // break to target if value is true: return 0; not null or non-zero
+                case ILOpCodeValues.Brtrue_S: return 1; // break to target if value is true: return 0; not null or non-zero (short)
                 case ILOpCodeValues.Br_S: return 1; // branches to target (short)
                 case ILOpCodeValues.Call: return 4; // calls target specified by method descriptor (methoddesc or token)
 
@@ -86,7 +86,7 @@ namespace ILEngine
                 case ILOpCodeValues.Clt_Un: return 0; // push on on the stack if first value (unsigned) is less than the second otherwise zero
 
                 // TODO: waiting blocked by Callvirt
-                case ILOpCodeValues.Constrained: return 0; // constrains a type on which a virtual call is made
+                case ILOpCodeValues.Constrained: return 4; // constrains a type on which a virtual call is made
 
                 case ILOpCodeValues.Conv_I: return 0; // convert value on the stack to native int
                 case ILOpCodeValues.Conv_I1: return 0; // convert value on the stack to int8 then extends (pads)  it to int32
@@ -131,7 +131,7 @@ namespace ILEngine
                 case ILOpCodeValues.Conv_U8: return 0; // to uint32 padded to int64
 
                 //TODO: Implement later
-                case ILOpCodeValues.Cpblk: return 4;// copies number of bytes from source address to destination address
+                case ILOpCodeValues.Cpblk: return 0;// copies number of bytes from source address to destination address
 
                 //TODO: Implement later
                 case ILOpCodeValues.Cpobj: return 4;// copies value type at address ( & * or native int) to destination address ( & * or native int)
@@ -152,7 +152,7 @@ namespace ILEngine
                 case ILOpCodeValues.Initblk: return 0; // initializes block of memory at at address to given size and value
 
                 // TODO: implement later
-                case ILOpCodeValues.Initobj: return 0; // initializes each field of a value type to null or default
+                case ILOpCodeValues.Initobj: return 4; // initializes each field of a value type to null or default
 
                 // TODO: implement later
                 case ILOpCodeValues.Isinst: return 4; // determin if object reference is particiluar class
@@ -160,16 +160,16 @@ namespace ILEngine
                 //
                 case ILOpCodeValues.Jmp: return 4; // exits current method and jumps to specified method
 
-                case ILOpCodeValues.Ldarg: return 4; // loads an argument specified by index onto the stack
-                case ILOpCodeValues.Ldarga: return 4; // loads argument address onto the stack
+                case ILOpCodeValues.Ldarg: return 2; // loads an argument specified by index onto the stack
+                case ILOpCodeValues.Ldarga: return 2; // loads argument address onto the stack
                 case ILOpCodeValues.Ldarga_S: return 1;  // loads an address  onto the stack (short)
-                case ILOpCodeValues.Ldarg_0: return 4; // load argument 0 onto the stack (this for instance methods first argument for static)
-                case ILOpCodeValues.Ldarg_1: return 4;// load argument 1 onto the stack (second argument for instance methods first argument for static)
-                case ILOpCodeValues.Ldarg_2: return 4;// load argument 2 onto the stack
-                case ILOpCodeValues.Ldarg_3: return 4;// load argument 3 onto the stack
-                case ILOpCodeValues.Ldarg_S: return 4; // loads an argument specified by index onto the stack (short)
+                case ILOpCodeValues.Ldarg_0: return 0; // load argument 0 onto the stack (this for instance methods first argument for static)
+                case ILOpCodeValues.Ldarg_1: return 0;// load argument 1 onto the stack (second argument for instance methods first argument for static)
+                case ILOpCodeValues.Ldarg_2: return 0;// load argument 2 onto the stack
+                case ILOpCodeValues.Ldarg_3: return 0;// load argument 3 onto the stack
+                case ILOpCodeValues.Ldarg_S: return 1; // loads an argument specified by index onto the stack (short)
 
-                case ILOpCodeValues.Ldc_I4: return 0; // pushes the specified int32 value onto the stack
+                case ILOpCodeValues.Ldc_I4: return 4; // pushes the specified int32 value onto the stack
                 case ILOpCodeValues.Ldc_I4_0: return 0; // pushes 0 onto the stack
                 case ILOpCodeValues.Ldc_I4_1: return 0; // pushes 1 onto the stack
                 case ILOpCodeValues.Ldc_I4_2: return 0; // pushes 2 onto the stack
@@ -181,58 +181,58 @@ namespace ILEngine
                 case ILOpCodeValues.Ldc_I4_8: return 0; // pushes 8 onto the stack
 
                 case ILOpCodeValues.Ldc_I4_M1: return 0; // pushes -1 onto the stack
-                case ILOpCodeValues.Ldc_I4_S: return 0; // pushes specified int8 onto the stack as int32
-                case ILOpCodeValues.Ldc_I8: return 0; // pushes specified int64 onto the stack
-                case ILOpCodeValues.Ldc_R4: return 0; // pushes specified f32 onto the stack
-                case ILOpCodeValues.Ldc_R8: return 0; // pushes specified f64 onto the stack
+                case ILOpCodeValues.Ldc_I4_S: return 1; // pushes specified int8 onto the stack as int32
+                case ILOpCodeValues.Ldc_I8: return 8; // pushes specified int64 onto the stack
+                case ILOpCodeValues.Ldc_R4: return 4; // pushes specified f32 onto the stack
+                case ILOpCodeValues.Ldc_R8: return 8; // pushes specified f64 onto the stack
 
                 //TODO: test if we need type references here
                 case ILOpCodeValues.Ldelem: return 4; // loads element at index onto the stack as type speficied in instruction
                 case ILOpCodeValues.Ldelema: return 4; // loads element address at index onto the stack as & (managed pointer)  
 
                 //TODO: May need to hold off
-                case ILOpCodeValues.Ldelem_I: return 4; // loads element with type native int at specified index onto the stack as native int
-                case ILOpCodeValues.Ldelem_I1: return 4; // loads int8 element at index onto the stack as int32
-                case ILOpCodeValues.Ldelem_I2: return 4; // loads int16 element at index onto the stack as int32
-                case ILOpCodeValues.Ldelem_I4: return 4; // loads int32 at index onto the stack
-                case ILOpCodeValues.Ldelem_I8: return 4; // loads int64 at index onto the stack
+                case ILOpCodeValues.Ldelem_I: return 0; // loads element with type native int at specified index onto the stack as native int
+                case ILOpCodeValues.Ldelem_I1: return 0; // loads int8 element at index onto the stack as int32
+                case ILOpCodeValues.Ldelem_I2: return 0; // loads int16 element at index onto the stack as int32
+                case ILOpCodeValues.Ldelem_I4: return 0; // loads int32 at index onto the stack
+                case ILOpCodeValues.Ldelem_I8: return 0; // loads int64 at index onto the stack
 
-                case ILOpCodeValues.Ldelem_R4: return 4; //loads f32 at index onto the stack
-                case ILOpCodeValues.Ldelem_R8: return 4; // loads f64 at index onto the stack
+                case ILOpCodeValues.Ldelem_R4: return 0; //loads f32 at index onto the stack
+                case ILOpCodeValues.Ldelem_R8: return 0; // loads f64 at index onto the stack
 
-                case ILOpCodeValues.Ldelem_Ref: return 4; // loads element containing object reference onto stack as object reference
-                case ILOpCodeValues.Ldelem_U1: return 4; // load uint8 onto the stack extended to int32
-                case ILOpCodeValues.Ldelem_U2: return 4; // load uint8 onto the stack extended to int32
-                case ILOpCodeValues.Ldelem_U4: return 4; // load uint8 onto the stack extended to int32
+                case ILOpCodeValues.Ldelem_Ref: return 0; // loads element containing object reference onto stack as object reference
+                case ILOpCodeValues.Ldelem_U1: return 0; // load uint8 onto the stack extended to int32
+                case ILOpCodeValues.Ldelem_U2: return 0; // load uint8 onto the stack extended to int32
+                case ILOpCodeValues.Ldelem_U4: return 0; // load uint8 onto the stack extended to int32
 
                 case ILOpCodeValues.Ldfld: return 4;// load field of object reference on the stack
                 case ILOpCodeValues.Ldflda: return 4;// load address of field of object reference on the stack
 
                 //TODO: Implement later
                 case ILOpCodeValues.Ldftn: return 4;// loads native int (unmanaged pointer) to native code for a method onto the stack
-                case ILOpCodeValues.Ldind_I: return 4; // indirectlyloads value type of native into onto the stack as native int 
-                case ILOpCodeValues.Ldind_I1: return 4; // indirectlyloads value type of i8 onto the stack as native int
-                case ILOpCodeValues.Ldind_I2: return 4; // indirectlyloads value type of i16 onto the stack as native int
-                case ILOpCodeValues.Ldind_I4: return 4; /// indirectly loads value type of int32 onto the stack as native int
-                case ILOpCodeValues.Ldind_I8: return 4; /// indirectly loads value type of int34 onto the stack as int64
+                case ILOpCodeValues.Ldind_I: return 0; // indirectlyloads value type of native int onto the stack as native int 
+                case ILOpCodeValues.Ldind_I1: return 0; // indirectlyloads value type of i8 onto the stack as native int
+                case ILOpCodeValues.Ldind_I2: return 0; // indirectlyloads value type of i16 onto the stack as native int
+                case ILOpCodeValues.Ldind_I4: return 0; /// indirectly loads value type of int32 onto the stack as native int
+                case ILOpCodeValues.Ldind_I8: return 0; /// indirectly loads value type of int34 onto the stack as int64
 
-                case ILOpCodeValues.Ldind_R4: return 4; // loads f32 onto the stack as native float
-                case ILOpCodeValues.Ldind_R8: return 4; // loads f64 onto the stack as native float
+                case ILOpCodeValues.Ldind_R4: return 0; // loads f32 onto the stack as native float
+                case ILOpCodeValues.Ldind_R8: return 0; // loads f64 onto the stack as native float
 
-                case ILOpCodeValues.Ldind_Ref: return 4; // indirectly loads object reference on stack as type O  (object reference)
-                case ILOpCodeValues.Ldind_U1: return 4; // indirectly loads uint8 onto the stack as int32
-                case ILOpCodeValues.Ldind_U2: return 4; // indirectly loads uint16 onto the stack as int32
-                case ILOpCodeValues.Ldind_U4: return 4; // indirectly loads uint8 onto the stack as int32
-                case ILOpCodeValues.Ldlen: return 4; // pushes the number of zero based 1-d array elements onto the stack
+                case ILOpCodeValues.Ldind_Ref: return 0; // indirectly loads object reference on stack as type O  (object reference)
+                case ILOpCodeValues.Ldind_U1: return 0; // indirectly loads uint8 onto the stack as int32
+                case ILOpCodeValues.Ldind_U2: return 0; // indirectly loads uint16 onto the stack as int32
+                case ILOpCodeValues.Ldind_U4: return 0; // indirectly loads uint8 onto the stack as int32
+                case ILOpCodeValues.Ldlen: return 0; // pushes the number of zero based 1-d array elements onto the stack
 
-                case ILOpCodeValues.Ldloc: return 4;// loads local variable at specified index onto the stack
-                case ILOpCodeValues.Ldloca: return 4; // loads address of local variable at specified index onto the stack
-                case ILOpCodeValues.Ldloca_S: return 4; // loads local variable at specified index onto the stack (short)
-                case ILOpCodeValues.Ldloc_0: return 4; // loads local variable at index 0 onto the stack (short)
-                case ILOpCodeValues.Ldloc_1: return 4; // loads local variable at index 1 onto the stack (short)
-                case ILOpCodeValues.Ldloc_2: return 4; // loads local variable at index 2 onto the stack (short)
-                case ILOpCodeValues.Ldloc_3: return 4; // loads local variable at index 3 onto the stack (short)
-                case ILOpCodeValues.Ldloc_S: return 4; // loads local variable at specified index onto the stack (short)
+                case ILOpCodeValues.Ldloc: return 2;// loads local variable at specified index onto the stack
+                case ILOpCodeValues.Ldloca: return 2; // loads address of local variable at specified index onto the stack
+                case ILOpCodeValues.Ldloca_S: return 1; // loads local variable at specified index onto the stack (short)
+                case ILOpCodeValues.Ldloc_0: return 0; // loads local variable at index 0 onto the stack (short)
+                case ILOpCodeValues.Ldloc_1: return 0; // loads local variable at index 1 onto the stack (short)
+                case ILOpCodeValues.Ldloc_2: return 0; // loads local variable at index 2 onto the stack (short)
+                case ILOpCodeValues.Ldloc_3: return 0; // loads local variable at index 3 onto the stack (short)
+                case ILOpCodeValues.Ldloc_S: return 1; // loads local variable at specified index onto the stack (short)
 
                 case ILOpCodeValues.Ldnull: return 0; // load null value onto the stack
                 case ILOpCodeValues.Ldobj: return 4; // copies value type pointed to by with object reference onto the stack
@@ -251,7 +251,7 @@ namespace ILEngine
                 case ILOpCodeValues.Leave_S: return 1; // breaks from protected region of code to specified target (short)
 
                 // TODO: Implement later
-                case ILOpCodeValues.Localloc: return 4; // allocates number of bytes from memory pool and pushes transient ptr* to first byte address on the stack
+                case ILOpCodeValues.Localloc: return 0; // allocates number of bytes from memory pool and pushes transient ptr* to first byte address on the stack
 
                 // TODO: Implement later
                 case ILOpCodeValues.Mkrefany: return 4;// pushes typed refrence to specified instance onto the stack
@@ -262,7 +262,7 @@ namespace ILEngine
 
                 case ILOpCodeValues.Neg: return 0; // negates value and pushes result onto stack
 
-                case ILOpCodeValues.Newarr: return 0; // pushes object reference to zero index 1d array onto the stack
+                case ILOpCodeValues.Newarr: return 4; // pushes object reference to zero index 1d array onto the stack
                 case ILOpCodeValues.Newobj: return 4; // creates new object or new instance of value type pushes object reference on stack
 
                 case ILOpCodeValues.Nop: return 0; // Fills space if opcodes are patched 
@@ -280,9 +280,9 @@ namespace ILEngine
                 case ILOpCodeValues.Prefixref: return 0; // reserved
 
                 // TODO: Implement later
-                case ILOpCodeValues.Readonly: return 4; // specifies susequent array address performs no type check returns pointer with restricted mutability
+                case ILOpCodeValues.Readonly: return 0; // specifies susequent array address performs no type check returns pointer with restricted mutability
                 //Todo: Implement later
-                case ILOpCodeValues.Refanytype: return 4; // retrieves type token embedded in type reference
+                case ILOpCodeValues.Refanytype: return 0; // retrieves type token embedded in type reference
                 // TODO: Implement later
                 case ILOpCodeValues.Refanyval: return 4; //retrieves the address (&) embeeded int a type reference
 
@@ -296,36 +296,36 @@ namespace ILEngine
                 case ILOpCodeValues.Shr_Un: return 0;// shift unsigned into right by number of bits
 
                 case ILOpCodeValues.Sizeof: return 4; // pushes size in bytes of current value type on stack 
-                case ILOpCodeValues.Starg: return 4; // stores value on stack to argument slot at index
-                case ILOpCodeValues.Starg_S: return 4;  // stores value on stack to argument slot at index (short)
+                case ILOpCodeValues.Starg: return 2; // stores value on stack to argument slot at index
+                case ILOpCodeValues.Starg_S: return 1;  // stores value on stack to argument slot at index (short)
 
                 case ILOpCodeValues.Stelem: return 4; // replace element array at index with value on stack type specied in instruction
-                case ILOpCodeValues.Stelem_I: return 4; // replace element array at index with value native int on stack
-                case ILOpCodeValues.Stelem_I1: return 4; // replace element array at index with int8 on stack
-                case ILOpCodeValues.Stelem_I2: return 4; // replace element array at index with int16 on stack
-                case ILOpCodeValues.Stelem_I4: return 4; // replace element array at index with int32 on stack
-                case ILOpCodeValues.Stelem_I8: return 4; // replace element array at index with int32 on stack
-                case ILOpCodeValues.Stelem_R4: return 4; // replace element array at index with f32 on stack
-                case ILOpCodeValues.Stelem_R8: return 4; // replace element array at index with f64 on stack
+                case ILOpCodeValues.Stelem_I: return 0; // replace element array at index with value native int on stack
+                case ILOpCodeValues.Stelem_I1: return 0; // replace element array at index with int8 on stack
+                case ILOpCodeValues.Stelem_I2: return 0; // replace element array at index with int16 on stack
+                case ILOpCodeValues.Stelem_I4: return 0; // replace element array at index with int32 on stack
+                case ILOpCodeValues.Stelem_I8: return 0; // replace element array at index with int32 on stack
+                case ILOpCodeValues.Stelem_R4: return 0; // replace element array at index with f32 on stack
+                case ILOpCodeValues.Stelem_R8: return 0; // replace element array at index with f64 on stack
 
-                case ILOpCodeValues.Stelem_Ref: return 4;// replace element array at index with object ref value on the stack
+                case ILOpCodeValues.Stelem_Ref: return 0;// replace element array at index with object ref value on the stack
                 case ILOpCodeValues.Stfld: return 4; // replace value stored in field
 
-                case ILOpCodeValues.Stind_I: return 4; // store native int at supplied address
-                case ILOpCodeValues.Stind_I1: return 4; // store int8 at supplied address
-                case ILOpCodeValues.Stind_I2: return 4; // store int16 at supplied address
-                case ILOpCodeValues.Stind_I4: return 4; // store int32 at supplied address
-                case ILOpCodeValues.Stind_I8: return 4; // store int64 at supplied address
+                case ILOpCodeValues.Stind_I: return 0; // store native int at supplied address
+                case ILOpCodeValues.Stind_I1: return 0; // store int8 at supplied address
+                case ILOpCodeValues.Stind_I2: return 0; // store int16 at supplied address
+                case ILOpCodeValues.Stind_I4: return 0; // store int32 at supplied address
+                case ILOpCodeValues.Stind_I8: return 0; // store int64 at supplied address
 
-                case ILOpCodeValues.Stind_R4: return 4; // store f32 at supplied address
-                case ILOpCodeValues.Stind_R8: return 4; //store f64 at supplied address
-                case ILOpCodeValues.Stind_Ref: return 4; // store object reference value at supplied address
-                case ILOpCodeValues.Stloc: return 4; // pops top of stack and stores it to local variable at specified index
-                case ILOpCodeValues.Stloc_0: return 4; // pops top of stack and stores it to local variable at index 0
+                case ILOpCodeValues.Stind_R4: return 0; // store f32 at supplied address
+                case ILOpCodeValues.Stind_R8: return 0; //store f64 at supplied address
+                case ILOpCodeValues.Stind_Ref: return 0; // store object reference value at supplied address
+                case ILOpCodeValues.Stloc: return 2; // pops top of stack and stores it to local variable at specified index
+                case ILOpCodeValues.Stloc_0: return 0; // pops top of stack and stores it to local variable at index 0
                 case ILOpCodeValues.Stloc_1: return 0; // pops top of stack and stores it to local variable at index 1
-                case ILOpCodeValues.Stloc_2: return 4; // pops top of stack and stores it to local variable at index 2
-                case ILOpCodeValues.Stloc_3: return 4; // pops top of stack and stores it to local variable at index 3
-                case ILOpCodeValues.Stloc_S: return 4; // pops top of stack and stores it to local variable at specified index (short)
+                case ILOpCodeValues.Stloc_2: return 0; // pops top of stack and stores it to local variable at index 2
+                case ILOpCodeValues.Stloc_3: return 0; // pops top of stack and stores it to local variable at index 3
+                case ILOpCodeValues.Stloc_S: return 1; // pops top of stack and stores it to local variable at specified index (short)
 
                 case ILOpCodeValues.Stobj: return 4; // Copies value at top of evaluation stack to specified address
                 case ILOpCodeValues.Stsfld: return 4; // replaces value of stack field with value on stack
@@ -335,13 +335,13 @@ namespace ILEngine
                 case ILOpCodeValues.Sub_Ovf_Un: return 0; // subtract unsigned with overflow check and push result onto the stack
                 case ILOpCodeValues.Switch: return 4; // Implements a jump table
                 //TODO: Implement later
-                case ILOpCodeValues.Tailcall: return 4;// preforms call after moving current methods stack frame
-                case ILOpCodeValues.Throw: return 4; // Throws exception object on the stack
+                case ILOpCodeValues.Tailcall: return 0;// preforms call after moving current methods stack frame
+                case ILOpCodeValues.Throw: return 0; // Throws exception object on the stack
 
-                case ILOpCodeValues.Unaligned: return 0;// specifies value on stack might not be aligned following following ldind stind ldfld stfld ldobj stobj initblk or cpblk instruction
-                case ILOpCodeValues.Unbox: return 0; // converts boxed value type to unboxed form
-                case ILOpCodeValues.Unbox_Any: return 0; // converts boxed representation of type to unboxed form
-                case ILOpCodeValues.Volatile: return 4; // Specifies address cannot be cached and multiple stores can not be supressed
+                case ILOpCodeValues.Unaligned: return 1;// specifies value on stack might not be aligned following following ldind stind ldfld stfld ldobj stobj initblk or cpblk instruction
+                case ILOpCodeValues.Unbox: return 4; // converts boxed value type to unboxed form
+                case ILOpCodeValues.Unbox_Any: return 4; // converts boxed representation of type to unboxed form
+                case ILOpCodeValues.Volatile: return 0; // Specifies address cannot be cached and multiple stores can not be supressed
                 case ILOpCodeValues.Xor: return 0; // Bitwise XOR
                 default: throw new NotImplementedException();
             }
@@ -353,9 +353,12 @@ namespace ILEngine
             if (OpCodes.TryGetValue(opcodeValue, out OpCode result))
                 return result;
             else
-                System.Diagnostics.Debug.Assert(false, "$Invalid opcode: {opcodeValue}");
-            return OpCodes[0];
+            {
+                if (System.Diagnostics.Debugger.IsAttached)
+                    System.Diagnostics.Debug.Assert(false, "$Invalid opcode: {opcodeValue}");
 
+                throw new KeyNotFoundException($"OpCodes does not contain key {opcodeValue}");
+            }
         }
     }
 }

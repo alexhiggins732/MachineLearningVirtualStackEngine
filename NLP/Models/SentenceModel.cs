@@ -74,7 +74,7 @@ namespace NLP.Models
                     classifiedWordSenses = Classify(WordSenses);
                     IsWordSenseDirty = false;
                 }
-                return classifiedWordSenses
+                return classifiedWordSenses;
             }
         }
 

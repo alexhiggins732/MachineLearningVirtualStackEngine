@@ -3,9 +3,9 @@ using System.Reflection;
 
 namespace ILEngine
 {
-    public class IlInstructionResolver : IIlInstructionResolver
+    public class ILInstructionResolver : IILInstructionResolver
     {
-        public static IlInstructionResolver ExecutingAssemblyResolver = new IlInstructionResolver(Assembly.GetExecutingAssembly().ManifestModule);
+        public static ILInstructionResolver ExecutingAssemblyResolver = new ILInstructionResolver(Assembly.GetExecutingAssembly().ManifestModule);
         //public static IlInstructionResolver CallingAssemblyResolver = new IlInstructionResolver(Assembly.GetCallingAssembly().ManifestModule);
         //public static IlInstructionResolver EntryAssemblyResolver = new IlInstructionResolver(Assembly.GetEntryAssembly().ManifestModule);
         public Module Module { get; }
@@ -16,8 +16,8 @@ namespace ILEngine
         public Func<int, string> ResolveStringToken { get; }
         public Func<int, Type> ResolveTypeToken { get; }
 
-        public IlInstructionResolver(MethodInfo method) : this(method.DeclaringType.Assembly.ManifestModule) { }
-        public IlInstructionResolver(Module manifestModule)
+        public ILInstructionResolver(MethodInfo method) : this(method.DeclaringType.Assembly.ManifestModule) { }
+        public ILInstructionResolver(Module manifestModule)
         {
             this.Module = manifestModule;
             //var module = System.Reflection.Assembly.GetExecutingAssembly().ManifestModule;

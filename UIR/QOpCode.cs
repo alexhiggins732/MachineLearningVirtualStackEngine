@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using ILEngine;
-using ILEngine.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -60,11 +59,11 @@ namespace UIR
             };
 
 
-            var result = IlStackFrameBuilder.BuildAndExecute(opcodes);
+            var result = ILStackFrameBuilder.BuildAndExecute(opcodes);
 
             opcodes.Add(OpCodes.Ldarg_0);
 
-            var result2 = IlStackFrameBuilder.BuildAndExecute(opcodes, args: new object[] { 1 });
+            var result2 = ILStackFrameBuilder.BuildAndExecute(opcodes, args: new object[] { 1 });
             System.Diagnostics.Debug.Assert(((int)result2.ReturnResult) == 1);
         }
     }
@@ -119,7 +118,7 @@ namespace UIR
             hardCoded.Add(OpCodes.Ldarg_0);
             hardCoded.Add(OpCodes.Ret);
 
-            var hcResult = IlStackFrameBuilder.BuildAndExecute(hardCoded, args: argList.ToArray());
+            var hcResult = ILStackFrameBuilder.BuildAndExecute(hardCoded, args: argList.ToArray());
 
 
             Train(qMaze, rewardMatrix, qualityMaxtrix, qMaze.Goal, gamma, learnRate, maxEpochs, expected, argList.ToArray());
@@ -183,9 +182,9 @@ namespace UIR
                 curr = next;
             }
 
-            var writer = new IlInstructionWriter(solution);
-            List<IlInstruction> ilInstructions = writer.GetInstructionStream();
-            var engine = new IlInstructionEngine();
+            var writer = new ILInstructionWriter(solution);
+            List<ILInstruction> ilInstructions = writer.GetInstructionStream();
+            var engine = new ILInstructionEngine();
             dynamic[] args = new dynamic[] { 1 };
             var result = engine.ExecuteTyped(ilInstructions, args: args);
             Console.WriteLine("done");
@@ -312,7 +311,7 @@ end-loop
                     double reward = -.1;
                     if (nextState == QOpCodeLearingGenerator.RetIndex)
                     {
-                        var frame = IlStackFrameBuilder.BuildAndExecute(l, 3, args: args);
+                        var frame = ILStackFrameBuilder.BuildAndExecute(l, 3, args: args);
                         if (frame.Exception != null)
                         {
                             reward = -.2;
@@ -419,8 +418,8 @@ end-loop
             try
             {
                 var executionOpCodes = l.ToArray().Concat(new[] { OpCodes.Ret }).ToList();
-                var writer = new IlInstructionWriter(executionOpCodes);
-                List<IlInstruction> instructions = writer.GetInstructionStream();
+                var writer = new ILInstructionWriter(executionOpCodes);
+                List<ILInstruction> instructions = writer.GetInstructionStream();
                 result.ExecutionState = new ExecutionState() { ilInstructions = instructions, Arguments = args };
                 TimeSpan timeout = TimeSpan.FromSeconds(timeoutSeconds);
                 using (var src = new CancellationTokenSource())
@@ -491,7 +490,7 @@ end-loop
 
         public class ExecutionState
         {
-            public List<IlInstruction> ilInstructions;
+            public List<ILInstruction> ilInstructions;
             public dynamic[] Arguments;
             public dynamic Result;
             public Exception Error;
@@ -518,7 +517,7 @@ end-loop
         private static void ExecuteInstructions(object obj)
         {
             var state = (ExecutionState)obj;
-            var engine = new IlInstructionEngine();
+            var engine = new ILInstructionEngine();
             try
             {
 

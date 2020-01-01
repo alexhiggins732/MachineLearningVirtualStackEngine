@@ -1,0 +1,124 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(SolutionDir)IlEngine\bin\\Debug\\ILEngine.exe" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="ILEngine.Factories" #>
+
+<#@ output extension=".cs" #>
+<# 
+var typeNames = ILTypes.AllTypes;
+var opCodeTestName= "OpAdd";
+var typeInfoes = new[] 
+{
+	new {name="i8min", type="sbyte", value="sbyte.MinValue"},
+	new {name="i8default", type="sbyte", value="0"},
+	new {name="i8max", type="sbyte", value="sbyte.MaxValue"}
+};
+var returnTypes = new Dictionary<string,string>();
+returnTypes.Add("sbyte_sbyte","int");
+returnTypes.Add("sbyte_short","int");
+returnTypes.Add("sbyte_int","int");
+returnTypes.Add("sbyte_long","long");
+returnTypes.Add("short_sbyte","int");
+returnTypes.Add("short_short","int");
+returnTypes.Add("short_int","int");
+returnTypes.Add("short_long","long");
+returnTypes.Add("int_sbyte","int");
+returnTypes.Add("int_short","int");
+returnTypes.Add("int_int","int");
+returnTypes.Add("int_long","long");
+returnTypes.Add("long_sbyte","long");
+returnTypes.Add("long_short","long");
+returnTypes.Add("long_int","long");
+returnTypes.Add("long_long","long");
+
+#>
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ILEngine.Implementations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Reflection.Emit;
+using ILEngine.Factories;
+using ILEngine.Compilers;
+namespace ILEngine.Tests
+{
+    [TestClass()]
+    public class <#=opCodeTestName#>Tests
+	{
+		#region <#=opCodeTestName#>Funcs
+	<# foreach(var typeA in typeNames){ #>
+	<# foreach(var typeB in typeNames){ #>
+
+		//Func<<#= typeA.TypeAlias #>, <#= typeB.TypeAlias #>, <#=ILTypes.GetOPAddReturnType(typeA, typeB)#>> <#=opCodeTestName#>_<#= typeA.TypeAlias #>_<#= typeB.TypeAlias #> = null; // (a, b) => a + b;
+		Func<<#= typeA.TypeAlias #>, <#= typeB.TypeAlias #>, object> <#=opCodeTestName#>_<#= typeA.TypeAlias #>_<#= typeB.TypeAlias #> = null; // (a, b) => a + b;
+
+
+	<# } #>
+	<# } #>
+		#endregion //<#=opCodeTestName#>Funcs
+
+		public static bool generateIlHandlers = true;
+
+
+		public <#=opCodeTestName#>Tests()
+		{
+			if(generateIlHandlers)
+			{
+				generateOpCodeHandlers();
+			}
+		}
+
+		private void generateOpCodeHandlers()
+		{
+		    var builder = new ILInstructionBuilder();
+            builder.Write(ILOpCodeValues.Ldarg_0);
+            builder.Write(ILOpCodeValues.Ldarg_1);
+            builder.Write(ILOpCodeValues.Add);
+            builder.Write(ILOpCodeValues.Ret);
+			var instructions = builder.Instructions;
+
+			//<#= string.Join(",", ILTypes.AllTypes.SelectMany(ilTypeA=> ILTypes.AllTypes.Select(ilTypeB=> opCodeTestName + "_" + ilTypeA.TypeAlias + "_" + ilTypeB.TypeAlias  ))) #>
+            
+			<# foreach (var ilTypeA in ILTypes.AllTypes)
+            {
+				foreach(var ilTypeB in ILTypes.AllTypes)
+				{
+					var methodName = $"{opCodeTestName}_{ilTypeA.TypeAlias}_{ilTypeB.TypeAlias}";#>
+
+			<#=methodName#> = CompileMethod<<#=ilTypeA.TypeAlias#>, <#=ilTypeB.TypeAlias#>, object>("<#=methodName#>", instructions);<#}
+            }#>
+
+		}
+
+        Func<T1,T2,T3> CompileMethod<T1, T2, T3>(string methodName, List<ILInstruction> instructions)
+        {
+            var method = new ILMethod(methodName, typeof(object));
+            method.Instructions = instructions;
+            method.AddParameters(new Type[] { typeof(T1), typeof(T2) });
+            var compiled = method.Compile();
+            Func<T1, T2, T3> func = (a, b) => (T3)compiled.Invoke(null, new object[] { a, b });
+            return func;
+        }
+	<# foreach(var infa in typeInfoes){ #>
+	<# foreach(var infb in typeInfoes){ #>
+
+		[TestMethod()]
+		public void Test_<#=opCodeTestName#>_<#= infa.name #>_<#= infb.name #>()
+		{
+			<#= infa.type #> a = <#= infa.value #>;
+			<#= infb.type #> b = <#= infb.value #>;
+			//<#=returnTypes[infa.type + "_"+ infb.type]#> expected = <#=opCodeTestName#>_<#= infa.type #>_<#= infb.type #>(a, b);
+			object actual = <#=opCodeTestName#>_<#= infa.type #>_<#= infb.type #>(a, b);
+			object expected = a + b;
+			Assert.AreEqual(a, b);
+		}
+	<# } #>
+	<# } #>
+
+	}
+}
