@@ -19,6 +19,7 @@ namespace MSILParser
 
         public static void Main(string[] args)
         {
+            /* eclude: anlter4 g5 files not woring in VS2022
             var path = @"C:\Users\alexander.higgins\source\repos\ILDisassembler\MSILParser\IlDisassembler.il";
             var text = File.ReadAllText(path);
 
@@ -41,9 +42,11 @@ namespace MSILParser
             var decl = parser.decl();
             vistor.Visit(decl);
             //parser.d
+            */
 
         }
     }
+    /* exlude Antlr4 not worrking in VS2022
     public class MsilVisitor : MSILBaseVisitor<object>
     {
         public override object Visit([NotNull] IParseTree tree)
@@ -64,5 +67,5 @@ namespace MSILParser
             return base.Visit(tree);
         }
     }
-
+    */
 }
